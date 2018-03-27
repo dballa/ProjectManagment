@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="ProjectManagment">
+		<class>com.ikubinfo.internship.project.entity.MemberEntity</class>
+		<class>com.ikubinfo.internship.project.entity.MemberPKEntity</class>
+		<class>com.ikubinfo.internship.project.entity.PriorityEntity</class>
+		<class>com.ikubinfo.internship.project.entity.ProjectEntity</class>
+		<class>com.ikubinfo.internship.project.entity.RequirmentEntity</class>
+		<class>com.ikubinfo.internship.project.entity.RoleEntity</class>
+		<class>com.ikubinfo.internship.project.entity.StatusEntity</class>
+		<class>com.ikubinfo.internship.project.entity.TaskEntity</class>
+		<class>com.ikubinfo.internship.project.entity.TeamEntity</class>
+		<class>com.ikubinfo.internship.project.entity.UserEntity</class>
+		<class>com.ikubinfo.internship.project.entity.PermissionEntity</class>
+		<class>com.ikubinfo.internship.project.entity.PermissionRoleEntity</class>
+		<class>com.ikubinfo.internship.project.entity.PermissionRolePKEntity</class>
+	</persistence-unit>
+</persistence>

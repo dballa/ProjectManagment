@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+	<link rel="stylesheet"
+		href="https://www.w3schools.com/lib/w3-theme-black.css" />
+	<link rel="stylesheet"
+		href="https://fonts.googleapis.com/css?family=Roboto" />
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+	<style>
+html, body, h1, h2, h3, h4, h5, h6 {
+	font-family: "Roboto", sans-serif;
+}
+
+.w3-sidebar {
+	z-index: 3;
+	width: 250px;
+	top: 43px;
+	bottom: 0;
+	height: inherit;
+}
+</style>
+	<title>Team</title>
+</h:head>
+<h:body>
+	<p:growl id="growl" showDetail="true" life="2000" />
+	<h:form id="myForm">
+		
+		<div class="w3-top">
+			<div class="w3-bar w3-theme w3-top w3-left-align w3-large">
+				<a
+					class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white w3-large w3-theme-l1"
+					href="javascript:void(0)" onclick="w3_open()"><i
+					class="fa fa-bars"></i></a>
+				<h:outputText value="Welcome #{userSessionBean.userName}" />
+				<br />
+			</div>
+		</div>
+		
+		<nav
+			class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5 w3-animate-left"
+			id="mySidebar"> <a href="javascript:void(0)"
+			onclick="w3_close()"
+			class="w3-right w3-xlarge w3-padding-large w3-hover-black w3-hide-large"
+			title="Close Menu"> <i class="fa fa-remove"></i>
+		</a>
+		<h4 class="w3-bar-item">
+			<b>Menu</b>
+		</h4>
+		<h:commandLink class="w3-bar-item w3-button w3-hover-black"
+			value="Project" action="ProjectManager.xhtml" />
+			
+			<h:commandLink class="w3-bar-item w3-button w3-hover-black"
+			value="Team" action="Team.xhtml" />
+			 <h:commandLink
+			class="w3-bar-item w3-button w3-hover-black" value="Logout"
+			actionListener="#{logOutBean.logout}" />
+			 </nav>
+
+		
+				
+
+			<div class="w3-main" style="margin-left: 250px">
+
+			<div class="w3-row w3-padding-64" >
+				<div class="w3-twothird w3-container" style="width: 75%">
+					<p:dataTable id="teamTable" var="team" value="#{teamBean.teams}">
+						<f:facet name="header">
+								Teams
+								 </f:facet>
+						<p:column headerText="Name">
+							<p:commandLink value="#{team.nameTeam}"
+								onclick="PF('dlg1').show();" action="#{teamBean.findTeamInfo}"
+								update="memberDialogForm:memberTable">
+								<f:setPropertyActionListener value="#{team}"
+									target="#{teamBean.teamInfo}"></f:setPropertyActionListener>
+							</p:commandLink>
+
+						</p:column>
+
+
+
+						<p:column >
+							<p:commandButton  icon="ui-icon-trash" id="deleteButton" title="Delete"
+								action="#{teamBean.removeTeam}" update="teamTable growl "
+								process="@form" ajax="true">
+								<f:setPropertyActionListener value="#{team}"
+									target="#{teamBean.toDelete}"></f:setPropertyActionListener>
+							</p:commandButton>
+
+
+
+							<p:commandButton  icon="ui-icon-wrench" id="editButton" title="Edit"
+								action="#{teamBean.redirectToEdit}" process="@this" ajax="true">
+								<f:setPropertyActionListener value="#{team.idTeam}"
+									target="#{teamBean.toEditId}"></f:setPropertyActionListener>
+							</p:commandButton>
+						</p:column>
+
+					</p:dataTable>
+
+
+
+
+
+
+
+
+
+
+				</div>
+<p:commandButton value="Create Team" onclick="PF('dlg2').show();" />
+			</div>
+			
+		</div>
+	</h:form>
+
+
+	<p:dialog header="New Team" widgetVar="dlg2" minHeight="40" modal="true" closable="false">
+		<h:form>
+			<p:panelGrid columns="2" style="float:center">
+				<p:panel id="panel">
+					<h:outputLabel value="Team Name:" for="newTeam" />
+					<p:inputText id="newTeam" value="#{teamBean.team.nameTeam}" required="true" requiredMessage="Team name is required"/>
+
+				</p:panel>
+			</p:panelGrid>
+			<p:commandButton id="createTeam" value="Create Team"
+				actionListener="#{teamBean.addTeam}" onsuccess="PF('dlg2').hide();"
+				update="myForm:teamTable growl" />
+			<p:commandButton value="Close" ajax="true" update="panel"
+				resetValues="true" onclick="PF('dlg2').hide();" />
+
+		</h:form>
+	</p:dialog>
+
+
+
+
+	<p:dialog header="Team Info" widgetVar="dlg1" modal="true" width="300"
+		height="300">
+		<h:form id="memberDialogForm">
+			<p:dataList value="#{teamBean.teamMembers}" var="member"
+				type="ordered" id="memberTable">
+				<f:facet name="header">
+            Member
+        </f:facet>
+        #{member.nameUser}, #{member.role.nameRole}
+    </p:dataList>
+
+		</h:form>
+	</p:dialog>
+
+<script>
+		// Get the Sidebar
+		var mySidebar = document.getElementById("mySidebar");
+
+		// Get the DIV with overlay effect
+		var overlayBg = document.getElementById("myOverlay");
+
+		// Toggle between showing and hiding the sidebar, and add overlay effect
+		function w3_open() {
+			if (mySidebar.style.display === 'block') {
+				mySidebar.style.display = 'none';
+				overlayBg.style.display = "none";
+			} else {
+				mySidebar.style.display = 'block';
+				overlayBg.style.display = "block";
+			}
+		}
+
+		// Close the sidebar with the close button
+		function w3_close() {
+			mySidebar.style.display = "none";
+			overlayBg.style.display = "none";
+		}
+	</script>
+
+</h:body>
+</html>
