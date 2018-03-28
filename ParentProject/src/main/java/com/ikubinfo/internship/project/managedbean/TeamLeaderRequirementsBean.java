@@ -7,40 +7,48 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import com.ikubinfo.internship.project.pojo.Project;
 import com.ikubinfo.internship.project.pojo.Requirment;
-
+import com.ikubinfo.internship.project.service.ProjectService;
 import com.ikubinfo.internship.project.service.RequirmentService;
-import com.mysql.fabric.xmlrpc.base.Array;
-
-@ManagedBean
+/*
+ * ishte tlReqBean
+ */
+@ManagedBean(name="tlReqBean")
 @ViewScoped
-public class TlReqBean {
-	private List<Requirment> requirments=new ArrayList<Requirment>();
+public class TeamLeaderRequirementsBean {
+	private List<Requirment> requirments = new ArrayList<Requirment>();
 	private int idProject;
 	private Project project;
 	private int requirmentId;
 	@ManagedProperty(value = "#{requirmentService}")
 	private RequirmentService requirmentService;
+	@ManagedProperty(value = "#{projectService}")
+	private ProjectService projectService;
+	
+	@ManagedProperty(value="#{userSessionBean}")
+	private UserSessionBean userSessionBean;
 
 	@PostConstruct
 	public void init() {
+
 		String id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
+		System.out.println(id);
 		idProject = Integer.parseInt(id);
 
-		requirments = requirmentService.requirmentOfProject(idProject);
-
+		System.out.println(idProject);
+		requirments = requirmentService.getProjectRequirements(idProject);
+		project = projectService.getProjectById(idProject);
 	}
 
-	public void redirectToTaskCreate() throws IOException {
-
-		FacesContext fContext = FacesContext.getCurrentInstance();
-		ExternalContext extContext = fContext.getExternalContext();
-		extContext.redirect(extContext.getRequestContextPath() + "/TlCreateTasks.xhtml?idreq=" + requirmentId);
+	public String redirectToTaskCreate() throws IOException {
+		userSessionBean.setCurrentProject(project);
+		System.out.println("requirmentId: " + requirmentId);
+		return "TlCreateTasks.xhtml?faces-redirect=true&idreq=" + requirmentId;
 	}
 
 	public List<Requirment> getRequirments() {
@@ -81,6 +89,22 @@ public class TlReqBean {
 
 	public void setRequirmentId(int requirmentId) {
 		this.requirmentId = requirmentId;
+	}
+
+	public ProjectService getProjectService() {
+		return projectService;
+	}
+
+	public void setProjectService(ProjectService projectService) {
+		this.projectService = projectService;
+	}
+
+	public UserSessionBean getUserSessionBean() {
+		return userSessionBean;
+	}
+
+	public void setUserSessionBean(UserSessionBean userSessionBean) {
+		this.userSessionBean = userSessionBean;
 	}
 
 }

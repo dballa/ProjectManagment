@@ -9,9 +9,289 @@
 	xmlns:of="http://omnifaces.org/functions">
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-	<title>Insert title here</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+	<link rel="stylesheet"
+		href="https://www.w3schools.com/lib/w3-theme-black.css" />
+	<link rel="stylesheet"
+		href="https://fonts.googleapis.com/css?family=Roboto" />
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+	<style>
+html, body, h1, h2, h3, h4, h5, h6 {
+	font-family: "Roboto", sans-serif;
+}
+
+.w3-sidebar {
+	z-index: 3;
+	width: 250px;
+	top: 43px;
+	bottom: 0;
+	height: inherit;
+}
+</style>
+	<title>Tasks</title>
 </h:head>
 <h:body>
-<p:outputLabel value="#{tlCreateTasksBean.idRequirment}"/>
+	<div class="header1">
+		<p:growl id="growl" showDetail="true" life="2000" />
+		<h:form id="form1">
+			<div class="w3-top">
+				<div class="w3-bar w3-theme w3-top w3-left-align w3-large">
+					<a
+						class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white w3-large w3-theme-l1"
+						href="javascript:void(0)" onclick="w3_open()"><i
+						class="fa fa-bars"></i></a>
+					<h:outputText value="Welcome #{userSessionBean.userName}" />
+					<br />
+				</div>
+			</div>
+			<nav
+				class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5 w3-animate-left"
+				id="mySidebar"> <a href="javascript:void(0)"
+				onclick="w3_close()"
+				class="w3-right w3-xlarge w3-padding-large w3-hover-black w3-hide-large"
+				title="Close Menu"> <i class="fa fa-remove"></i>
+			</a>
+			<h4 class="w3-bar-item">
+				<b>Menu</b>
+			</h4>
+			<h:commandLink class="w3-bar-item w3-button w3-hover-black"
+				value="Project" action="TeamLeader.xhtml" /> <h:commandLink
+				class="w3-bar-item w3-button w3-hover-black" value="Logout"
+				actionListener="#{logOutBean.logout}" /> </nav>
+			<div class="w3-overlay w3-hide-large" onclick="w3_close()"
+				style="cursor: pointer" title="close side menu" id="myOverlay"></div>
+		</h:form>
+
+
+	</div>
+
+	<div class="w3-main" style="margin-left: 250px">
+
+		<div class="w3-row w3-padding-64">
+
+			<p:commandButton value="Create Task" onclick="PF('dlg1').show();" />
+			<div class="w3-twothird w3-container" style="width: 85%">
+
+				<div class="column middle1" align="center">
+					<h:form id="myForm">
+						<p:dataTable id="taskTable"
+							value="#{teamLeaderCreateTasksBean.tasks}" var="task"
+							rowKey="task.idTask">
+							<p:column headerText="Name">
+								<h:outputText value="#{task.nameTask}" />
+
+							</p:column>
+							<p:column headerText="Description">
+								<h:outputText value="#{task.description}" />
+
+							</p:column>
+							<p:column headerText="Start Date">
+								<h:outputText value="#{task.startDate}" />
+
+							</p:column>
+							<p:column headerText="End Date">
+								<h:outputText value="#{task.endDate}" />
+
+							</p:column>
+							<p:column headerText="Assigned to">
+								<h:outputText value="#{task.assignedTo.nameUser}" />
+
+							</p:column>
+							<p:column headerText="Status">
+								<h:outputText value="#{task.status.nameStatus}" />
+
+							</p:column>
+							<p:column headerText="Priority">
+								<h:outputText value="#{task.priority.namePriority}" />
+
+							</p:column>
+							<p:column>
+								<p:commandButton icon="ui-icon-trash"
+									action="#{teamLeaderCreateTasksBean.removeTask}"
+									process="@form" update="taskTable growl">
+									<f:setPropertyActionListener value="#{task}"
+										target="#{teamLeaderCreateTasksBean.toDelete}"></f:setPropertyActionListener>
+								</p:commandButton>
+
+
+								<p:commandButton icon="ui-icon-wrench"
+									oncomplete="PF('dlg2').show();" update="dlgForm2:editDialog">
+
+
+									<f:setPropertyActionListener value="#{task}"
+										target="#{teamLeaderCreateTasksBean.toEdit}"></f:setPropertyActionListener>
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+
+
+					</h:form>
+
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<h:form id="dlgForm2">
+		<p:dialog header="Task  Info" closable="false" widgetVar="dlg2"
+			minHeight="40" modal="true" autoUpdate="true" id="editDialog">
+
+
+			<p:panel id="panel2">
+				<p:panelGrid columns="2">
+					<h:outputLabel for="taskName" value="Name: " />
+					<p:inputText id="taskName" required="true"
+						requiredMessage="Name is required"
+						value="#{teamLeaderCreateTasksBean.toEdit.nameTask}" />
+					<h:outputLabel for="taskDesc" value="Description: " />
+					<p:inputTextarea id="taskDesc"
+						value="#{teamLeaderCreateTasksBean.toEdit.description}" />
+					<p:outputLabel for="startDate" value="Start Date:" />
+					<p:calendar id="startDate"
+						value="#{teamLeaderCreateTasksBean.toEdit.startDate}"
+						required="true" />
+
+					<p:outputLabel for="endDate" value="End Date:" />
+					<p:calendar id="endDate"
+						value="#{teamLeaderCreateTasksBean.toEdit.endDate}"
+						required="true" />
+					<p:outputLabel for="statusSelect" value="Status:" />
+					<p:selectOneMenu id="statusSelect"
+						value="#{teamLeaderCreateTasksBean.toEdit.status}"
+						converter="omnifaces.SelectItemsConverter" required="true">
+
+
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selected is : #{teamLeaderCreateTasksBean.toEdit.status.nameStatus}" />
+						<f:selectItems value="#{commonDataBean.statusList}" var="status"
+							itemLabel="#{status.nameStatus}" />
+
+					</p:selectOneMenu>
+					<p:outputLabel for="prioritySelect" value="Priority:" />
+					<p:selectOneMenu id="prioritySelect"
+						value="#{teamLeaderCreateTasksBean.toEdit.priority}"
+						converter="omnifaces.SelectItemsConverter" required="true">
+
+
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selected is :#{teamLeaderCreateTasksBean.toEdit.priority.namePriority}" />
+						<f:selectItems value="#{commonDataBean.priorityList}"
+							var="priority" itemLabel="#{priority.namePriority}" />
+
+					</p:selectOneMenu>
+
+					<p:outputLabel for="developerSelect" value="Assign to :" />
+					<p:selectOneMenu id="developerSelect"
+						value="#{teamLeaderCreateTasksBean.toEdit.assignedTo}"
+						converter="omnifaces.SelectItemsConverter" required="true">
+
+
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selected is : #{teamLeaderCreateTasksBean.toEdit.assignedTo.nameUser}" />
+						<f:selectItems value="#{teamLeaderCreateTasksBean.developers}"
+							var="dev" itemLabel="#{dev.nameUser}" />
+
+					</p:selectOneMenu>
+
+
+				</p:panelGrid>
+			</p:panel>
+			<p:commandButton value="Edit"
+				actionListener="#{teamLeaderCreateTasksBean.editTask}"
+				process="dlgForm2" onsuccess="PF('dlg2').hide();"
+				update="myForm growl" />
+
+			<p:commandButton value="Cancel" onclick="PF('dlg2').hide()"
+				ajax="true" update="panel2" resetValues="true" />
+
+
+
+		</p:dialog>
+	</h:form>
+
+
+
+	<p:dialog header="Task  Info" closable="false" widgetVar="dlg1"
+		minHeight="40" modal="true">
+
+		<h:form id="dlgForm">
+			<p:panel id="panel">
+				<p:panelGrid columns="2">
+					<h:outputLabel for="taskName" value="Name: " />
+					<p:inputText id="taskName" required="true"
+						requiredMessage="Name is required"
+						value="#{teamLeaderCreateTasksBean.task.nameTask}" />
+					<h:outputLabel for="taskDesc" value="Description: " />
+					<p:inputTextarea id="taskDesc"
+						value="#{teamLeaderCreateTasksBean.task.description}" />
+					<p:outputLabel for="startDate" value="Start Date:" />
+					<p:calendar id="startDate"
+						value="#{teamLeaderCreateTasksBean.task.startDate}"
+						required="true" />
+
+					<p:outputLabel for="endDate" value="End Date:" />
+					<p:calendar id="endDate"
+						value="#{teamLeaderCreateTasksBean.task.endDate}" required="true" />
+					<p:outputLabel for="statusSelect" value="Status:" />
+					<p:selectOneMenu id="statusSelect"
+						value="#{teamLeaderCreateTasksBean.task.status}"
+						converter="omnifaces.SelectItemsConverter" required="true">
+
+
+						<f:selectItem noSelectionOption="true" itemLabel="Select Status" />
+						<f:selectItems value="#{commonDataBean.statusList}" var="status"
+							itemLabel="#{status.nameStatus}" />
+
+					</p:selectOneMenu>
+					<p:outputLabel for="prioritySelect" value="Priority:" />
+					<p:selectOneMenu id="prioritySelect"
+						value="#{teamLeaderCreateTasksBean.task.priority}"
+						converter="omnifaces.SelectItemsConverter" required="true">
+
+
+						<f:selectItem noSelectionOption="true" itemLabel="Select Priority" />
+						<f:selectItems value="#{commonDataBean.priorityList}"
+							var="priority" itemLabel="#{priority.namePriority}" />
+
+					</p:selectOneMenu>
+
+					<p:outputLabel for="developerSelect" value="Assign to :" />
+					<p:selectOneMenu id="developerSelect"
+						value="#{teamLeaderCreateTasksBean.task.assignedTo}"
+						converter="omnifaces.SelectItemsConverter" required="true">
+
+
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Select Developer" />
+						<f:selectItems value="#{teamLeaderCreateTasksBean.developers}"
+							var="dev" itemLabel="#{dev.nameUser}" />
+
+					</p:selectOneMenu>
+
+
+				</p:panelGrid>
+			</p:panel>
+			<p:commandButton value="Save"
+				actionListener="#{teamLeaderCreateTasksBean.addTask}"
+				process="dlgForm" onsuccess="PF('dlg1').hide();"
+				update="myForm growl" />
+
+			<p:commandButton value="Cancel" onclick="PF('dlg1').hide()"
+				ajax="true" update="panel" resetValues="true" />
+		</h:form>
+
+
+	</p:dialog>
+
+
+
+
+
+
+
 </h:body>
 </html>

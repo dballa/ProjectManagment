@@ -21,9 +21,9 @@ public class UserService {
 
 	}
 	
-	public List<User> devToAsignTask (Team team){
+	public List<User> getDevelopers (Team team){
 		
-		return userDao.devToAsignTask(team);
+		return userDao.getDevelopers(team);
 		
 	}
 	

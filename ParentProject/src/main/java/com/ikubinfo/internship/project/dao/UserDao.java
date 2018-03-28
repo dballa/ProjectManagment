@@ -38,10 +38,10 @@ public class UserDao {
 		return userPojo;
 	}
 	
-	public List<User>devToAsignTask(Team team){
+	public List<User>getDevelopers(Team team){
 		
 		Session session=sessionFactory.getCurrentSession();
-		Query<UserEntity> query=session.createQuery("select us from UserEntity us join us.members usmem where usmem.team.idTeam=?1 and us.role.nameRole=?2",UserEntity.class);
+		Query<UserEntity> query=session.createQuery("select us from UserEntity us join us.members usmem where usmem.team.idTeam=?1 and us.role.nameRole=?2 and us.validity=1",UserEntity.class);
 		query.setParameter(1, team.getIdTeam());
 		query.setParameter(2, "Developer");
 		List<UserEntity> users =query.getResultList();

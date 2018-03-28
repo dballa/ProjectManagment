@@ -29,7 +29,7 @@ public class TeamService {
 
 	public void removeTeam(Team team) throws TeamInProjectException {
 
-		if (teamDao.tryEx(team)) {
+		if (teamDao.tryEx(team) == true) {
 
 			team.setValidity((byte) 0);
 			teamDao.removeTeam(team);

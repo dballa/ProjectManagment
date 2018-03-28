@@ -16,14 +16,27 @@ public class TaskService {
 	private TaskDao taskDao;
 	
 	
-	public List<Task> requirmentTasks(Requirment requirment){
+	public List<Task> requirmentTasks(int idReq){
 		
-		return taskDao.requirmentTasks(requirment);
+		return taskDao.requirmentTasks(idReq);
 	}
 
 	
 	public void addTask(Task task) {
 		
 		taskDao.addTask(task);
+	}
+	public void removeTask(Task task) {
+		
+		taskDao.removeTask(task);
+		
+	}
+	public void editTask(Task task) {
+		taskDao.editTask(task);
+	}
+	
+	public List<Task> getTasksOfDeveloper(int idProject,int idUser){
+		
+	return taskDao.getTasksOfDeveloper(idProject, idUser);
 	}
 }

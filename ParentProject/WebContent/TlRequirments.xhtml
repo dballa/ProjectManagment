@@ -78,7 +78,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 				<div class="column middle1" align="center">
 					<h:form id="myForm">
 						<p:dataTable id="reqTable" value="#{tlReqBean.requirments}"
-							var="req">
+							var="req" rowKey="#{req.idRequirment}">
 							<f:facet name="header">
 								Requirments
 								 </f:facet>
@@ -100,10 +100,12 @@ html, body, h1, h2, h3, h4, h5, h6 {
 								<h:outputText value="#{req.priority.namePriority}" />
 
 							</p:column>
+							
+							
 
 							<p:column>
 								<p:commandButton icon="ui-icon-arrowthick-1-e"
-									actionListener="#{tlReqBean.redirectToTaskCreate}" process="myForm">
+									action="#{tlReqBean.redirectToTaskCreate}" process="@this myForm">
 									<f:setPropertyActionListener value="#{req.idRequirment}"
 										target="#{tlReqBean.requirmentId}"></f:setPropertyActionListener>
 

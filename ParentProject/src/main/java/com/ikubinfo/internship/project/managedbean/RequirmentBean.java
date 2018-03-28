@@ -1,5 +1,6 @@
 package com.ikubinfo.internship.project.managedbean;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,8 +9,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-
-
 
 import com.ikubinfo.internship.project.pojo.Priority;
 import com.ikubinfo.internship.project.pojo.Project;
@@ -32,8 +31,9 @@ public class RequirmentBean {
 	private int idProject;
 	private Requirment requirment;
 	private Project project = new Project();
-	private List<Task>requirmentTask;
+	
 	private Requirment showTasks;
+	private List<Task> requirmentTasks=new ArrayList<Task>();
 
 	@ManagedProperty(value = "#{requirmentService}")
 	private RequirmentService requirmentService;
@@ -41,21 +41,22 @@ public class RequirmentBean {
 	private StatusService statusService;
 	@ManagedProperty(value = "#{priorityService}")
 	private PriorityService priorityService;
-	@ManagedProperty(value="#{projectService}")
+	@ManagedProperty(value = "#{projectService}")
 	private ProjectService projectService;
-	@ManagedProperty(value="#{taskService}")
+	@ManagedProperty(value = "#{taskService}")
 	private TaskService taskService;
 
 	@PostConstruct
 	public void init() {
 		String id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
 		idProject = Integer.parseInt(id);
-		requirements = requirmentService.requirmentOfProject(idProject);
+		requirements = requirmentService.getProjectRequirements(idProject);
 		status = statusService.allStatus();
 		priority = priorityService.allPriority();
-		project=projectService.getProjectById(idProject);
+		project = projectService.getProjectById(idProject);
 		requirment = new Requirment();
 		showTasks=new Requirment();
+		
 		
 	}
 
@@ -63,16 +64,21 @@ public class RequirmentBean {
 		requirment.setValidity((byte) 1);
 		requirment.setProject(project);
 		requirmentService.addRequirment(requirment);
-		requirements = requirmentService.requirmentOfProject(idProject);
+		requirements = requirmentService.getProjectRequirements(idProject);
+	}
+	public void getListRequirmentTasks(){
+		System.out.println(showTasks.getIdRequirment());
+		requirmentTasks=new ArrayList<Task>();
+		requirmentTasks= taskService.requirmentTasks(showTasks.getIdRequirment());	
+		System.out.println(requirmentTasks);
+		
 	}
 
-	public void requirmentTasks() {
-		requirmentTask=taskService.requirmentTasks(showTasks);
-		System.out.println(requirmentTask);
-	//	RequestContext requestContext = RequestContext.getCurrentInstance();  
-	//	  requestContext.execute("PF('dlg2').show();");
+	public void changeProjectStatus() throws IOException {
 		
-		
+		projectService.editProject(project);
+		FacesContext context = FacesContext.getCurrentInstance();
+		context.getExternalContext().redirect("BusinessAnalyst.xhtml");
 	}
 	
 	public List<Requirment> getRequrements() {
@@ -163,13 +169,8 @@ public class RequirmentBean {
 		this.projectService = projectService;
 	}
 
-	public List<Task> getRequirmentTasks() {
-		return requirmentTask;
-	}
 
-	public void setRequirmentTasks(List<Task> requirmentTasks) {
-		this.requirmentTask = requirmentTasks;
-	}
+
 
 	public TaskService getTaskService() {
 		return taskService;
@@ -187,11 +188,12 @@ public class RequirmentBean {
 		this.showTasks = showTasks;
 	}
 
-	public List<Task> getRequirmentTask() {
-		return requirmentTask;
+	
+	public List<Task> getRequirmentTasks() {
+		return requirmentTasks;
 	}
 
-	public void setRequirmentTask(List<Task> requirmentTask) {
-		this.requirmentTask = requirmentTask;
+	public void setRequirmentTasks(List<Task> requirmentTasks) {
+		this.requirmentTasks = requirmentTasks;
 	}
 }

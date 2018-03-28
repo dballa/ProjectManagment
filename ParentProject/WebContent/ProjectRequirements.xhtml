@@ -37,205 +37,231 @@ html, body, h1, h2, h3, h4, h5, h6 {
 
 
 	<div class="header1">
-	<p:growl id="growl" showDetail="true" life="2000" />
-	<h:form id="form">
-				<div class="w3-top">
-			<div class="w3-bar w3-theme w3-top w3-left-align w3-large">
-				<a
-					class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white w3-large w3-theme-l1"
-					href="javascript:void(0)" onclick="w3_open()"><i
-					class="fa fa-bars"></i></a>
-				<h:outputText value="Welcome #{userSessionBean.userName}" />
-				<br/> 
+		<p:growl id="growl" showDetail="true" life="2000" />
+		<h:form id="form">
+			<div class="w3-top">
+				<div class="w3-bar w3-theme w3-top w3-left-align w3-large">
+					<a
+						class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white w3-large w3-theme-l1"
+						href="javascript:void(0)" onclick="w3_open()"><i
+						class="fa fa-bars"></i></a>
+					<h:outputText value="Welcome #{userSessionBean.userName}" />
+					<br />
+				</div>
 			</div>
-		</div>
-<nav
-			class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5 w3-animate-left"
-			id="mySidebar"> <a href="javascript:void(0)"
-			onclick="w3_close()"
-			class="w3-right w3-xlarge w3-padding-large w3-hover-black w3-hide-large"
-			title="Close Menu"> <i class="fa fa-remove"></i>
-		</a>
-		<h4 class="w3-bar-item">
-			<b>Menu</b>
-		</h4>
-		<h:commandLink class="w3-bar-item w3-button w3-hover-black"
-			value="Project" action="BusinessAnalyst.xhtml" /> <h:commandLink
-			class="w3-bar-item w3-button w3-hover-black" value="Logout"
-			actionListener="#{logOutBean.logout}" />
-			 </nav>
+			<nav
+				class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5 w3-animate-left"
+				id="mySidebar"> <a href="javascript:void(0)"
+				onclick="w3_close()"
+				class="w3-right w3-xlarge w3-padding-large w3-hover-black w3-hide-large"
+				title="Close Menu"> <i class="fa fa-remove"></i>
+			</a>
+			<h4 class="w3-bar-item">
+				<b>Menu</b>
+			</h4>
+			<h:commandLink class="w3-bar-item w3-button w3-hover-black"
+				value="Project" action="BusinessAnalyst.xhtml" /> <h:commandLink
+				class="w3-bar-item w3-button w3-hover-black" value="Logout"
+				actionListener="#{logOutBean.logout}" /> </nav>
 			<div class="w3-overlay w3-hide-large" onclick="w3_close()"
-			style="cursor: pointer" title="close side menu" id="myOverlay"></div>
+				style="cursor: pointer" title="close side menu" id="myOverlay"></div>
 		</h:form>
-	
-	
+
+
 	</div>
 	<div class="w3-main" style="margin-left: 250px">
 
-			<div class="w3-row w3-padding-64">
-		<p:commandButton value="Create Requirment"
-					onclick="PF('dlg1').show();" />
-			
-				<div class="w3-twothird w3-container" style="width: 85%">
-
+		<div class="w3-row w3-padding-64">
 			<h:form id="myForm2">
+			
+			<p:commandButton value="Create Requirment"
+				onclick="PF('dlg1').show();" />
+
+		<h:outputLabel for="selectStatus" value="Change Project Status"/>
+		<p:selectOneMenu id="selectStatus"
+						value="#{requirmentBean.project.status}"
+						converter="omnifaces.SelectItemsConverter" >
+
+
+						<f:selectItem noSelectionOption="true" itemLabel="Select Status" />
+						<f:selectItems value="#{requirmentBean.status}" var="status"
+							itemLabel="#{status.nameStatus}" />
+
+					</p:selectOneMenu>
+					
+					<p:commandButton value="Update Status" action="#{requirmentBean.changeProjectStatus}">
+					
+					
+					</p:commandButton>
+					</h:form>
+			<div class="w3-twothird w3-container" style="width: 85%">
 
 				
 
-			</h:form>
-		</div>
-		<div class="column middle">
 
-			<div align="center">
 				
-				<h:form id="myForm">
-					<p:dataTable id="baProjects" var="req"
-						value="#{requirmentBean.requirements}">
-						<f:facet name="header">
+			</div>
+			<div class="column middle">
+
+				<div align="center">
+
+					<h:form id="myForm">
+						<p:dataTable id="baProjects" var="req"
+							value="#{requirmentBean.requirements}">
+							<f:facet name="header">
 								Requirements
 								 </f:facet>
-						<p:column headerText="Requrement Name">
-							<h:outputText value="#{req.nameRequirment}"/>
+							<p:column headerText="Requrement Name">
+								<h:outputText value="#{req.nameRequirment}" />
 
 
 
-							
 
-						</p:column>
 
-						<p:column headerText="Description">
-							<h:outputText value="#{req.description}" />
-						</p:column>
-						<p:column headerText="Status">
-							<h:outputText value="#{req.status.nameStatus}" />
-						</p:column>
+							</p:column>
 
-						<p:column headerText="Priority">
-							<h:outputText value="#{req.priority.namePriority}" />
-						</p:column>
-					<p:column>
-							<p:commandButton     action="#{requirmentBean.requirmentTasks}" update="tasksInfo:tasksTable" icon="ui-icon-search" onclick="PF('dlg2').show();"   >
-								<f:setPropertyActionListener value="#{req}"
-									target="#{requirmentBean.showTasks}"></f:setPropertyActionListener>
-					</p:commandButton>
-						</p:column>
-					</p:dataTable>
+							<p:column headerText="Description">
+								<h:outputText value="#{req.description}" />
+							</p:column>
+							<p:column headerText="Status">
+								<h:outputText value="#{req.status.nameStatus}" />
+							</p:column>
 
-				</h:form>
+							<p:column headerText="Priority">
+								<h:outputText value="#{req.priority.namePriority}" />
+							</p:column>
+							<p:column>
+								<p:commandButton id="showTasks" icon="ui-icon-search"
+									onclick="PF('dlg2').show(); "
+									action="#{requirmentBean.getListRequirmentTasks}"
+									update="@this tasksInfo:tasksTable">
+									<f:setPropertyActionListener value="#{req}"
+										target="#{requirmentBean.showTasks}"></f:setPropertyActionListener>
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+
+					</h:form>
+
+
+
+				</div>
+
 
 
 
 			</div>
 
-
-
-
+			<div class="column side"></div>
 		</div>
-		
-		<div class="column side">	</div>
 
-		<h:form id="createDialog">
-			<p:dialog header="Requirement" closable="false" widgetVar="dlg1"
-				minHeight="40" modal="true">
-				<p:panel id="panel">
-					<p:panelGrid columns="2">
+	</div>
+	<h:form id="createDialog">
+		<p:dialog header="Requirement" closable="false" widgetVar="dlg1"
+			minHeight="40" modal="true">
+			<p:panel id="panel">
+				<p:panelGrid columns="2">
 
-						<p:outputLabel for="reqName" value="Requirement Name:" />
-						<p:inputText id="reqName"
-							value="#{requirmentBean.requirment.nameRequirment}"
-							required="true" requiredMessage="Name is required" />
-						<p:outputLabel for="reqDesc" value="Description" />
-						<p:inputTextarea id="reqDesc"
-							value="#{requirmentBean.requirment.description}" />
-						<p:outputLabel for="statusSelect" value="Status:" />
-						<p:selectOneMenu id="statusSelect"
-							value="#{requirmentBean.requirment.status}"
-							converter="omnifaces.SelectItemsConverter" required="true">
-
-
-							<f:selectItem noSelectionOption="true" itemLabel="Select Status" />
-							<f:selectItems value="#{requirmentBean.status}" var="status"
-								itemLabel="#{status.nameStatus}" />
-
-						</p:selectOneMenu>
+					<p:outputLabel for="reqName" value="Requirement Name:" />
+					<p:inputText id="reqName"
+						value="#{requirmentBean.requirment.nameRequirment}"
+						required="true" requiredMessage="Name is required" />
+					<p:outputLabel for="reqDesc" value="Description" />
+					<p:inputTextarea id="reqDesc"
+						value="#{requirmentBean.requirment.description}" />
+					<p:outputLabel for="statusSelect" value="Status:" />
+					<p:selectOneMenu id="statusSelect"
+						value="#{requirmentBean.requirment.status}"
+						converter="omnifaces.SelectItemsConverter" required="true">
 
 
-						<p:outputLabel for="prioritySelect" value="Priority:" />
-						<p:selectOneMenu id="prioritySelect"
-							value="#{requirmentBean.requirment.priority}"
-							converter="omnifaces.SelectItemsConverter" required="true">
+						<f:selectItem noSelectionOption="true" itemLabel="Select Status" />
+						<f:selectItems value="#{requirmentBean.status}" var="status"
+							itemLabel="#{status.nameStatus}" />
+
+					</p:selectOneMenu>
 
 
-							<f:selectItem noSelectionOption="true"
-								itemLabel="Select Priority" />
-							<f:selectItems value="#{requirmentBean.priority}" var="priority"
-								itemLabel="#{priority.namePriority}" />
+					<p:outputLabel for="prioritySelect" value="Priority:" />
+					<p:selectOneMenu id="prioritySelect"
+						value="#{requirmentBean.requirment.priority}"
+						converter="omnifaces.SelectItemsConverter" required="true">
 
 
-						</p:selectOneMenu>
+						<f:selectItem noSelectionOption="true" itemLabel="Select Priority" />
+						<f:selectItems value="#{requirmentBean.priority}" var="priority"
+							itemLabel="#{priority.namePriority}" />
 
-					</p:panelGrid>
-				</p:panel>
-				<h:panelGrid columns="2" style="float:right">
 
-					<p:commandButton value="Save"
-						action="#{requirmentBean.addRequirment}"
-						update="myForm:baProjects growl" onsuccess="PF('dlg1').hide();"
-						process="createDialog " />
-					<p:commandButton value="Close" ajax="true" update="panel"
-						resetValues="true" onclick="PF('dlg1').hide();" />
-				</h:panelGrid>
+					</p:selectOneMenu>
 
-			</p:dialog>
+				</p:panelGrid>
+			</p:panel>
+			<h:panelGrid columns="2" style="float:right">
 
-		</h:form>
-		
+				<p:commandButton value="Save"
+					action="#{requirmentBean.addRequirment}"
+					update="myForm:baProjects growl" onsuccess="PF('dlg1').hide();"
+					process="createDialog " />
+				<p:commandButton value="Close" ajax="true" update="panel"
+					resetValues="true" onclick="PF('dlg1').hide();" />
+			</h:panelGrid>
+
+		</p:dialog>
+
+	</h:form>
+	
 		<p:dialog header="Tasks" widgetVar="dlg2" modal="true" width="400"
-		height="400">
-		<h:form id="tasksInfo">
-			<p:dataList value="#{requirmentBean.requirmentTask}" var="task"
+			height="400">
+<h:form id="tasksInfo">
+			<p:dataList value="#{requirmentBean.requirmentTasks}" var="task"
 				type="ordered" id="tasksTable">
 				<f:facet name="header">
             Tasks
         </f:facet>
-     Name: #{task.nameTask}<br/>
-      Status: #{task.status.nameStatus}<br/>
-       Priority: #{task.priority.namePriority}
+     Name: #{task.nameTask}<br />
+      Status: #{task.status.nameStatus}<br />
+       Priority: #{task.priority.namePriority}<br/>
+    ------------------
+       
     </p:dataList>
+</h:form>
+		</p:dialog>
+
+	
 
 
-<script>
-			// Get the Sidebar
-			var mySidebar = document.getElementById("mySidebar");
 
-			// Get the DIV with overlay effect
-			var overlayBg = document.getElementById("myOverlay");
 
-			// Toggle between showing and hiding the sidebar, and add overlay effect
-			function w3_open() {
-				if (mySidebar.style.display === 'block') {
-					mySidebar.style.display = 'none';
-					overlayBg.style.display = "none";
-				} else {
-					mySidebar.style.display = 'block';
-					overlayBg.style.display = "block";
-				}
-			}
+	<script>
+		// Get the Sidebar
+		var mySidebar = document.getElementById("mySidebar");
 
-			// Close the sidebar with the close button
-			function w3_close() {
-				mySidebar.style.display = "none";
+		// Get the DIV with overlay effect
+		var overlayBg = document.getElementById("myOverlay");
+
+		// Toggle between showing and hiding the sidebar, and add overlay effect
+		function w3_open() {
+			if (mySidebar.style.display === 'block') {
+				mySidebar.style.display = 'none';
 				overlayBg.style.display = "none";
+			} else {
+				mySidebar.style.display = 'block';
+				overlayBg.style.display = "block";
 			}
-		</script>
-		</h:form>
-	</p:dialog>
-		
-		
-		
-		
-	</div>
+		}
 
-</div>
+		// Close the sidebar with the close button
+		function w3_close() {
+			mySidebar.style.display = "none";
+			overlayBg.style.display = "none";
+		}
+	</script>
+
+
+
+
+
+
 </h:body>
 </html>

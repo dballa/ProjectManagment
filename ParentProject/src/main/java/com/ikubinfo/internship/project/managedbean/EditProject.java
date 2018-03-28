@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -44,12 +45,18 @@ public class EditProject {
 	}
 
 	public void editProject() throws IOException {
+		if(toEdit.getEndDate().after(toEdit.getStartDate()) ) {
 		toEdit.setValidity((byte) 1);
 		projectService.editProject(toEdit);
 		FacesContext fContext = FacesContext.getCurrentInstance();
 		ExternalContext extContext = fContext.getExternalContext();
 		extContext.redirect(extContext.getRequestContextPath() + "/ProjectManager.xhtml");
+		}
+		else {
+			FacesContext context = FacesContext.getCurrentInstance();
 
+			context.addMessage(null, new FacesMessage("!! End date should be after start date"));
+		}
 	}
 	
 	public void redirectToPM() throws IOException {

@@ -8,7 +8,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ExternalContext;
 
 import com.ikubinfo.internship.project.pojo.Team;
 import com.ikubinfo.internship.project.pojo.User;
@@ -24,9 +23,12 @@ public class EditTeamBean {
 	private List<User> userDev = new ArrayList<User>();
 	private List<User> allUser = new ArrayList<User>();
 	private List<User> userBa = new ArrayList<User>();
-
 	private List<User> selectedDev = new ArrayList<User>();
 	private int toEditId;
+	private User projectManager;
+	private User businessAnalyst;
+	private User teamLeader;
+
 	@ManagedProperty(value = "#{userService}")
 	private UserService userService;
 	@ManagedProperty(value = "#{teamService}")
@@ -55,10 +57,6 @@ public class EditTeamBean {
 
 		}
 
-		System.out.println(userPm);
-		System.out.println(userDev);
-		System.out.println(userBa);
-		System.out.println(userTl);
 	}
 
 	public Team getToEdit() {
@@ -139,6 +137,30 @@ public class EditTeamBean {
 
 	public void setSelectedDev(List<User> selectedDev) {
 		this.selectedDev = selectedDev;
+	}
+
+	public User getProjectManager() {
+		return projectManager;
+	}
+
+	public User getBusinessAnalyst() {
+		return businessAnalyst;
+	}
+
+	public User getTeamLeader() {
+		return teamLeader;
+	}
+
+	public void setProjectManager(User projectManager) {
+		this.projectManager = projectManager;
+	}
+
+	public void setBusinessAnalyst(User businessAnalyst) {
+		this.businessAnalyst = businessAnalyst;
+	}
+
+	public void setTeamLeader(User teamLeader) {
+		this.teamLeader = teamLeader;
 	}
 
 }

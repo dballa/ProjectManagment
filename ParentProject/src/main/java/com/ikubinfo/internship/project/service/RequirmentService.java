@@ -1,10 +1,7 @@
 package com.ikubinfo.internship.project.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.primefaces.model.DefaultTreeNode;
-import org.primefaces.model.TreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +14,9 @@ public class RequirmentService {
 	@Autowired
 	private RequirmentDao requirmentDao;
 
-	public List<Requirment> requirmentOfProject(int idProject) {
+	public List<Requirment> getProjectRequirements(int idProject) {
 
-		return requirmentDao.requirmentOfProject(idProject);
+		return requirmentDao.getProjectRequirements(idProject);
 	}
 
 	public void addRequirment(Requirment requirment) {
@@ -27,6 +24,9 @@ public class RequirmentService {
 		requirmentDao.addRequirment(requirment);
 	}
 	
-	
+	public Requirment getRequirmentById(int id) {
+		
+		return requirmentDao.getRequirementById(id);
+	}
 	
 }

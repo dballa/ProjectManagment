@@ -62,7 +62,7 @@ public class TeamDao {
 			throw new TeamInProjectException("This Team has a project");
 			
 		}
-			return true;
+		else	return true;
 		
 	}
 
@@ -76,7 +76,7 @@ public class TeamDao {
 
 		Session session = sessionFactory.getCurrentSession();
 		Query<UserEntity> query = session.createQuery(
-				"select members.user from MemberEntity members where members.team.idTeam=?1", UserEntity.class);
+				"select members.user from MemberEntity members where members.team.idTeam=?1 and members.validity=1", UserEntity.class);
 		query.setParameter(1, team.getIdTeam());
 		List<UserEntity> users = query.list();
 

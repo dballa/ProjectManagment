@@ -24,10 +24,10 @@ public class RequirmentDao {
 
 	private RequirmentConverter REQUIRMENT_CONVERTER = new RequirmentConverter();
 
-	public List<Requirment> requirmentOfProject(int idProject) {
+	public List<Requirment> getProjectRequirements(int idProject) {
 		Session session = sessionFactory.getCurrentSession();
 
-		Query<RequirmentEntity> query = session.createQuery("from RequirmentEntity where project.idProject=?1",
+		Query<RequirmentEntity> query = session.createQuery("from RequirmentEntity where project.idProject=?1 and project.validity=1",
 				RequirmentEntity.class);
 		query.setParameter(1, idProject);
 		List<RequirmentEntity> reqOfProject = query.getResultList();
@@ -45,6 +45,18 @@ public class RequirmentDao {
 		Session session = sessionFactory.getCurrentSession();
 		System.out.println(requirment);
 		session.save(REQUIRMENT_CONVERTER.fromPojoToEntity(requirment));
+
+	}
+
+	public Requirment getRequirementById(int id) {
+
+		Session session = sessionFactory.getCurrentSession();
+		Query<RequirmentEntity> query = session.createQuery(
+				"from RequirmentEntity req where req.idRequirment=?1 and req.validity=1 ", RequirmentEntity.class);
+		query.setParameter(1, id);
+		RequirmentEntity foundRequirment = query.getSingleResult();
+		Requirment pojoRequirment = REQUIRMENT_CONVERTER.fromEntityToPojo(foundRequirment);
+		return pojoRequirment;
 
 	}
 

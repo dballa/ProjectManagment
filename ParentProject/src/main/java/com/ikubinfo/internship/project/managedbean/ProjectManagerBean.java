@@ -67,7 +67,7 @@ public class ProjectManagerBean {
 	}
 
 	public void addProject() {
-
+		if(project.getEndDate().after(project.getStartDate()) ) {
 		project.setCreatedBy(createdBy);
 		project.setValidity((byte) 1);
 		projectService.addProject(project);
@@ -75,8 +75,13 @@ public class ProjectManagerBean {
 
 		FacesContext context = FacesContext.getCurrentInstance();
 
-		context.addMessage(null, new FacesMessage("Success", "Project " + project.getNameProject() + " Added"));
+		context.addMessage(null, new FacesMessage("Success"+ "Project " + project.getNameProject() + " Added"));
+		}
+		else {
+			FacesContext context = FacesContext.getCurrentInstance();
 
+			context.addMessage(null, new FacesMessage("!! End date should be after start date"));
+		}
 	}
 
 	public void removeProject() {

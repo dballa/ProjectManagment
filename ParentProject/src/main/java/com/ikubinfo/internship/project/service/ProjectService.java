@@ -1,5 +1,6 @@
 package com.ikubinfo.internship.project.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,14 @@ public class ProjectService {
 		return projectDao.baProjects(id);
 	}
 	public List<Project>tlProjects(int id){
+		List<Project> allProjects=projectDao.tlProjects(id);
+		List<Project> filtredProjects=new ArrayList<Project>();
+		for (Project project:allProjects) {
+			if(!"Waiting BA".equals(project.getStatus().getNameStatus())) {
+				filtredProjects.add(project);
+			}
+		}
 		
-		return projectDao.tlProjects(id);
+		 return filtredProjects;
 	}
 }
