@@ -20,7 +20,7 @@ import com.ikubinfo.internship.project.service.StatusService;
 public class BusinessAnalystBean {
 
 	private List<Project> projects = new ArrayList<Project>();
-	private List<Status> status = new ArrayList<Status>();
+	
 	private List<Requirment> requirments = new ArrayList<Requirment>();
 	private Requirment requirment;
 	private Project project;
@@ -28,8 +28,7 @@ public class BusinessAnalystBean {
 	private int userId;
 	@ManagedProperty(value = "#{projectService}")
 	private ProjectService projectService;
-	@ManagedProperty(value = "#{statusService}")
-	private StatusService statusService;
+
 
 	@PostConstruct
 	public void init() {
@@ -43,7 +42,7 @@ public class BusinessAnalystBean {
 
 		FacesContext fContext = FacesContext.getCurrentInstance();
 		ExternalContext extContext = fContext.getExternalContext();
-		extContext.redirect(extContext.getRequestContextPath() + "/ProjectRequirements.xhtml?id=" + projectId);
+		extContext.redirect(extContext.getRequestContextPath() + "/BusinessAnalyst/ProjectRequirements.xhtml?id=" + projectId);
 
 	}
 
@@ -51,9 +50,7 @@ public class BusinessAnalystBean {
 		return projects;
 	}
 
-	public List<Status> getStatus() {
-		return status;
-	}
+	
 
 	public Requirment getRequirment() {
 		return requirment;
@@ -67,9 +64,7 @@ public class BusinessAnalystBean {
 		this.projects = projects;
 	}
 
-	public void setStatus(List<Status> status) {
-		this.status = status;
-	}
+	
 
 	public void setRequirment(Requirment requirment) {
 		this.requirment = requirment;
@@ -87,13 +82,6 @@ public class BusinessAnalystBean {
 		this.projectService = projectService;
 	}
 
-	public StatusService getStatusService() {
-		return statusService;
-	}
-
-	public void setStatusService(StatusService statusService) {
-		this.statusService = statusService;
-	}
 
 	public List<Requirment> getRequirments() {
 		return requirments;

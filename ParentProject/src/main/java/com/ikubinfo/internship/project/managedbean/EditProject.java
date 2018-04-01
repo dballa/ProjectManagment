@@ -41,7 +41,7 @@ public class EditProject {
 		toEdit = projectService.getProjectById(toEditId);
 		teams = teamService.allTeams();
 		status = statusService.allStatus();
-		System.out.println(toEdit);
+		
 	}
 
 	public void editProject() throws IOException {
@@ -50,7 +50,7 @@ public class EditProject {
 		projectService.editProject(toEdit);
 		FacesContext fContext = FacesContext.getCurrentInstance();
 		ExternalContext extContext = fContext.getExternalContext();
-		extContext.redirect(extContext.getRequestContextPath() + "/ProjectManager.xhtml");
+		extContext.redirect(extContext.getRequestContextPath() + "/ProjectManager/ProjectManager.xhtml");
 		}
 		else {
 			FacesContext context = FacesContext.getCurrentInstance();
@@ -62,7 +62,7 @@ public class EditProject {
 	public void redirectToPM() throws IOException {
 		FacesContext fContext = FacesContext.getCurrentInstance();
 		ExternalContext extContext = fContext.getExternalContext();
-		extContext.redirect(extContext.getRequestContextPath() + "/ProjectManager.xhtml");
+		extContext.redirect(extContext.getRequestContextPath() + "/ProjectManager/ProjectManager.xhtml");
 		
 	}
 

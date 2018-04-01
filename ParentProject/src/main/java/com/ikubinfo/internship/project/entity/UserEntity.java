@@ -32,7 +32,7 @@ public class UserEntity implements Serializable {
 	private List<MemberEntity> members;
 
 	//bi-directional many-to-one association to Role
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name="IdRole")
 	private RoleEntity role;
 

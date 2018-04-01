@@ -27,7 +27,7 @@ public class RequirmentDao {
 	public List<Requirment> getProjectRequirements(int idProject) {
 		Session session = sessionFactory.getCurrentSession();
 
-		Query<RequirmentEntity> query = session.createQuery("from RequirmentEntity where project.idProject=?1 and project.validity=1",
+		Query<RequirmentEntity> query = session.createQuery("from RequirmentEntity req where req.project.idProject=?1 and req.project.validity=1 and req.validity=1",
 				RequirmentEntity.class);
 		query.setParameter(1, idProject);
 		List<RequirmentEntity> reqOfProject = query.getResultList();
@@ -47,6 +47,12 @@ public class RequirmentDao {
 		session.save(REQUIRMENT_CONVERTER.fromPojoToEntity(requirment));
 
 	}
+	
+	public void removeRequirement(Requirment requirment) {
+		Session session = sessionFactory.getCurrentSession();
+		
+		session.merge(REQUIRMENT_CONVERTER.fromPojoToEntity(requirment));
+	}
 
 	public Requirment getRequirementById(int id) {
 
@@ -59,5 +65,9 @@ public class RequirmentDao {
 		return pojoRequirment;
 
 	}
-
+	
+	public void editRequirment(Requirment requirment) {
+		Session session = sessionFactory.getCurrentSession();
+		session.merge(REQUIRMENT_CONVERTER.fromPojoToEntity(requirment));
+	}
 }

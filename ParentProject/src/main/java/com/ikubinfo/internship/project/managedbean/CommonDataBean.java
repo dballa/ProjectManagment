@@ -1,5 +1,6 @@
 package com.ikubinfo.internship.project.managedbean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -16,9 +17,9 @@ import com.ikubinfo.internship.project.service.StatusService;
 @ApplicationScoped
 public class CommonDataBean {
 	
-	private List<Status> statusList;
-	private List<Priority> priorityList;
-	
+	private List<Status> statusList = new ArrayList<Status>();
+	private List<Priority> priorityList= new  ArrayList<Priority>(); 
+	private List<Status> filtredStatus=new ArrayList<Status>();
 	@ManagedProperty(value="#{statusService}")
 	private StatusService statusService;
 	@ManagedProperty(value="#{priorityService}")
@@ -27,7 +28,25 @@ public class CommonDataBean {
 	public void init() {
 		statusList=statusService.allStatus();
 		priorityList=priorityService.allPriority();
+		filtredStatus();
 	}
+	
+	public List<Status> filtredStatus() {
+		List<Status>	statusList = statusService.allStatus();
+
+			for (Status status : statusList) {
+
+				if (!"Waiting BA".equals(status.getNameStatus())) {
+
+					filtredStatus.add(status);
+				}
+			}
+			return filtredStatus;
+		}
+	
+	
+	
+	
 	public List<Status> getStatusList() {
 		return statusList;
 	}
@@ -51,5 +70,13 @@ public class CommonDataBean {
 	}
 	public void setPriorityService(PriorityService priorityService) {
 		this.priorityService = priorityService;
+	}
+
+	public List<Status> getFiltredStatus() {
+		return filtredStatus;
+	}
+
+	public void setFiltredStatus(List<Status> filtredStatus) {
+		this.filtredStatus = filtredStatus;
 	}
 }

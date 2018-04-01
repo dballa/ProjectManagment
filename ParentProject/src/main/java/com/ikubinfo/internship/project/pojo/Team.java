@@ -1,5 +1,6 @@
 package com.ikubinfo.internship.project.pojo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.OneToMany;
@@ -15,7 +16,7 @@ public class Team {
 	private byte validity;
 
 	
-	private List<Member> members;
+	private List<Member> members= new ArrayList<Member>();
 
 	
 	private List<Project> projects;
@@ -96,4 +97,8 @@ public class Team {
 		return "Team [idTeam=" + idTeam + ", nameTeam=" + nameTeam + ", validity=" + validity + ", members=" + members
 				+ ", projects=" + projects + "]";
 	}
+
+	
+
+	
 }

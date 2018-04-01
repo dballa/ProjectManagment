@@ -37,7 +37,7 @@ public class DeveloperProjectsBean {
 public String redirectToTasks() throws IOException {
 
 		
-		return "DeveloperTasks.xhtml?faces-redirect=true&id=" + projectId;
+		return "/Developer/DeveloperTasks.xhtml?faces-redirect=true&id=" + projectId;
 	
 }
 	

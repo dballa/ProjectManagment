@@ -20,4 +20,8 @@ public class MemberPK {
 	public void setMember(int member) {
 		this.member = member;
 	}
+	@Override
+	public String toString() {
+		return "MemberPK [idTeam=" + idTeam + "]";
+	}
 }

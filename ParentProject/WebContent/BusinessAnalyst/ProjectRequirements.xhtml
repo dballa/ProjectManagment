@@ -73,34 +73,32 @@ html, body, h1, h2, h3, h4, h5, h6 {
 
 		<div class="w3-row w3-padding-64">
 			<h:form id="myForm2">
-			
-			<p:commandButton value="Create Requirment"
-				onclick="PF('dlg1').show();" />
 
-		<h:outputLabel for="selectStatus" value="Change Project Status"/>
-		<p:selectOneMenu id="selectStatus"
+				<p:commandButton value="Create Requirment"
+					onclick="PF('dlg1').show();" />
+			</h:form>
+			<h:form>
+				<h:panelGrid columns="3">
+					<h:outputLabel for="selectStatus" value="Change Project Status" />
+					<p:selectOneMenu id="selectStatus"
 						value="#{requirmentBean.project.status}"
-						converter="omnifaces.SelectItemsConverter" >
+						converter="omnifaces.SelectItemsConverter">
 
 
 						<f:selectItem noSelectionOption="true" itemLabel="Select Status" />
-						<f:selectItems value="#{requirmentBean.status}" var="status"
-							itemLabel="#{status.nameStatus}" />
+						<f:selectItems value="#{commonDataBean.statusList}"
+							var="status" itemLabel="#{status.nameStatus}" />
 
 					</p:selectOneMenu>
-					
-					<p:commandButton value="Update Status" action="#{requirmentBean.changeProjectStatus}">
-					
-					
+
+					<p:commandButton value="Update Status"
+						action="#{requirmentBean.changeProjectStatus}">
+
+
 					</p:commandButton>
-					</h:form>
-			<div class="w3-twothird w3-container" style="width: 85%">
-
-				
-
-
-				
-			</div>
+				</h:panelGrid>
+			</h:form>
+			<div class="w3-twothird w3-container" style="width: 85%"></div>
 			<div class="column middle">
 
 				<div align="center">
@@ -138,6 +136,23 @@ html, body, h1, h2, h3, h4, h5, h6 {
 									<f:setPropertyActionListener value="#{req}"
 										target="#{requirmentBean.showTasks}"></f:setPropertyActionListener>
 								</p:commandButton>
+
+
+								<p:commandButton id="removeRequirment" icon="ui-icon-trash"
+									action="#{requirmentBean.removeRequirment}"
+									update="@this baProjects growl">
+									<f:setPropertyActionListener value="#{req}"
+										target="#{requirmentBean.toDelete}"></f:setPropertyActionListener>
+								</p:commandButton>
+
+								<p:commandButton id="editRequirment" icon="ui-icon-wrench"
+									oncomplete="PF('dlgEdit').show();" update="formEdit:editDialog">
+
+									<f:setPropertyActionListener value="#{req}"
+										target="#{requirmentBean.toEdit}"></f:setPropertyActionListener>
+								</p:commandButton>
+
+
 							</p:column>
 						</p:dataTable>
 
@@ -156,6 +171,71 @@ html, body, h1, h2, h3, h4, h5, h6 {
 		</div>
 
 	</div>
+
+	<h:form id="formEdit">
+		<p:dialog header="Requirement" closable="false" widgetVar="dlgEdit"
+			minHeight="40" modal="true" autoUpdate="true" id="editDialog">
+			<p:panel id="panelEdit">
+				<p:panelGrid columns="2">
+
+
+					<p:outputLabel for="reqName" value="Requirement Name:" />
+					<p:inputText id="reqName"
+						value="#{requirmentBean.toEdit.nameRequirment}" required="true"
+						requiredMessage="Name is required" />
+					<p:outputLabel for="reqDesc" value="Description" />
+					<p:inputTextarea id="reqDesc"
+						value="#{requirmentBean.toEdit.description}" />
+					<p:outputLabel for="statusSelect" value="Status:" />
+					<p:selectOneMenu id="statusSelect"
+						value="#{requirmentBean.toEdit.status}"
+						converter="omnifaces.SelectItemsConverter" required="true">
+
+
+						<f:selectItem noSelectionOption="true" itemLabel="Select Status" />
+						<f:selectItems value="#{commonDataBean.filtredStatus}" var="status"
+							itemLabel="#{status.nameStatus}" />
+
+					</p:selectOneMenu>
+
+
+					<p:outputLabel for="prioritySelect" value="Priority:" />
+					<p:selectOneMenu id="prioritySelect"
+						value="#{requirmentBean.toEdit.priority}"
+						converter="omnifaces.SelectItemsConverter" required="true">
+
+
+						<f:selectItem noSelectionOption="true" itemLabel="Select Priority" />
+						<f:selectItems value="#{commonDataBean.priorityList}" var="priority"
+							itemLabel="#{priority.namePriority}" />
+
+
+					</p:selectOneMenu>
+
+				</p:panelGrid>
+
+
+			</p:panel>
+			<p:commandButton value="Edit"
+				actionListener="#{requirmentBean.editRequirment}"
+				process="formEdit" onsuccess="PF('dlgEdit').hide();"
+				update="myForm growl" />
+
+
+	
+			<p:commandButton value="Cancel" onclick="PF('dlgEdit').hide()"
+				ajax="true" update="panelEdit" resetValues="true" />
+	
+		</p:dialog>
+
+
+
+
+	</h:form>
+
+
+
+
 	<h:form id="createDialog">
 		<p:dialog header="Requirement" closable="false" widgetVar="dlg1"
 			minHeight="40" modal="true">
@@ -176,7 +256,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 
 
 						<f:selectItem noSelectionOption="true" itemLabel="Select Status" />
-						<f:selectItems value="#{requirmentBean.status}" var="status"
+						<f:selectItems value="#{commonDataBean.filtredStatus}" var="status"
 							itemLabel="#{status.nameStatus}" />
 
 					</p:selectOneMenu>
@@ -189,7 +269,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 
 
 						<f:selectItem noSelectionOption="true" itemLabel="Select Priority" />
-						<f:selectItems value="#{requirmentBean.priority}" var="priority"
+						<f:selectItems value="#{commonDataBean.priorityList}" var="priority"
 							itemLabel="#{priority.namePriority}" />
 
 
@@ -210,10 +290,10 @@ html, body, h1, h2, h3, h4, h5, h6 {
 		</p:dialog>
 
 	</h:form>
-	
-		<p:dialog header="Tasks" widgetVar="dlg2" modal="true" width="400"
-			height="400">
-<h:form id="tasksInfo">
+
+	<p:dialog header="Tasks" widgetVar="dlg2" modal="true" width="400"
+		height="400">
+		<h:form id="tasksInfo">
 			<p:dataList value="#{requirmentBean.requirmentTasks}" var="task"
 				type="ordered" id="tasksTable">
 				<f:facet name="header">
@@ -221,14 +301,14 @@ html, body, h1, h2, h3, h4, h5, h6 {
         </f:facet>
      Name: #{task.nameTask}<br />
       Status: #{task.status.nameStatus}<br />
-       Priority: #{task.priority.namePriority}<br/>
+       Priority: #{task.priority.namePriority}<br />
     ------------------
        
     </p:dataList>
-</h:form>
-		</p:dialog>
+		</h:form>
+	</p:dialog>
 
-	
+
 
 
 

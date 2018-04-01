@@ -167,7 +167,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selected is : #{teamLeaderCreateTasksBean.toEdit.status.nameStatus}" />
-						<f:selectItems value="#{commonDataBean.statusList}" var="status"
+						<f:selectItems value="#{commonDataBean.filtredStatus}" var="status"
 							itemLabel="#{status.nameStatus}" />
 
 					</p:selectOneMenu>
@@ -243,7 +243,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 
 
 						<f:selectItem noSelectionOption="true" itemLabel="Select Status" />
-						<f:selectItems value="#{commonDataBean.statusList}" var="status"
+						<f:selectItems value="#{commonDataBean.filtredStatus}" var="status"
 							itemLabel="#{status.nameStatus}" />
 
 					</p:selectOneMenu>

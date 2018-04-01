@@ -36,7 +36,7 @@ public class TeamLeaderBean {
 	public String redirectToTasks() throws IOException {
 
 		
-		return "TlRequirments.xhtml?faces-redirect=true&id=" + projectId;
+		return "/TeamLeader/TlRequirments.xhtml?faces-redirect=true&id=" + projectId;
 		
 	}
 

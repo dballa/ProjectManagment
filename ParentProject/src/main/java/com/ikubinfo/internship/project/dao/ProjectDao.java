@@ -29,7 +29,7 @@ public class ProjectDao {
 				.createQuery("from ProjectEntity where validity=1 and createdBy=?1", ProjectEntity.class);
 		query.setParameter(1, id);
 		List<ProjectEntity> projects = query.list();
-		System.out.println(projects);
+		
 		List<Project> projectsPojo = new ArrayList<Project>();
 		for (ProjectEntity project : projects) {
 
@@ -73,8 +73,7 @@ public class ProjectDao {
 		Session session = sessionFactory.getCurrentSession();
 		Query<ProjectEntity> query = session.createQuery
 
-		// ("select team.projects from TeamEntity team join team.members tm where
-		// tm.user.idUser=1 ",ProjectEntity.class);
+		
 		("select proj from ProjectEntity  proj  join proj.team.members  mem where mem.user.idUser=?1 and proj.status.nameStatus=?2 and proj.validity=1",
 				ProjectEntity.class);
 		query.setParameter(1, id);
@@ -98,7 +97,7 @@ public class ProjectDao {
 		query.setParameter(1, id);
 		
 		List<ProjectEntity> tlProjects = query.getResultList();
-	//	System.out.println(baProjects);
+	
 		List<Project> tlProjectsPojo = new ArrayList<Project>();
 		for (ProjectEntity project : tlProjects) {
 			tlProjectsPojo.add(PROJECT_CONVERTER.fromEntityToPojo(project));

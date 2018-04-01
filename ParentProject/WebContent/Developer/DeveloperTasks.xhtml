@@ -110,7 +110,9 @@ html, body, h1, h2, h3, h4, h5, h6 {
 								<h:outputText value="Name" />
 								<h:outputText
 									value="#{developerTasksBean.selectedTask.nameTask}" />
-
+								<h:outputText value="Description" />
+								<h:outputText
+									value="#{developerTasksBean.selectedTask.description}" />
 								<h:outputText value="Start Date" />
 								<h:outputText
 									value="#{developerTasksBean.selectedTask.startDate}" />
@@ -129,7 +131,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 
 									<f:selectItem noSelectionOption="true"
 										itemLabel="Selected is : #{developerTaskBean.selectedTask.status.nameStatus}" />
-									<f:selectItems value="#{developerTasksBean.filtredStatus}"
+									<f:selectItems value="#{commonDataBean.filtredStatus}"
 										var="status" itemLabel="#{status.nameStatus}" />
 
 								</p:selectOneMenu>

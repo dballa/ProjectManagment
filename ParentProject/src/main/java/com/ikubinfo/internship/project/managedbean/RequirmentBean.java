@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import com.ikubinfo.internship.project.pojo.Priority;
@@ -34,7 +36,8 @@ public class RequirmentBean {
 	
 	private Requirment showTasks;
 	private List<Task> requirmentTasks=new ArrayList<Task>();
-
+	private Requirment toDelete;
+	private Requirment toEdit=new Requirment();
 	@ManagedProperty(value = "#{requirmentService}")
 	private RequirmentService requirmentService;
 	@ManagedProperty(value = "#{statusService}")
@@ -56,15 +59,22 @@ public class RequirmentBean {
 		project = projectService.getProjectById(idProject);
 		requirment = new Requirment();
 		showTasks=new Requirment();
-		
+	
+		toDelete=new Requirment();
 		
 	}
 
+	
+	
+	
 	public void addRequirment() {
 		requirment.setValidity((byte) 1);
 		requirment.setProject(project);
 		requirmentService.addRequirment(requirment);
 		requirements = requirmentService.getProjectRequirements(idProject);
+		FacesContext context = FacesContext.getCurrentInstance();
+
+		context.addMessage(null, new FacesMessage("Success Requirement" + requirment.getNameRequirment() +"Added" ));
 	}
 	public void getListRequirmentTasks(){
 		System.out.println(showTasks.getIdRequirment());
@@ -77,8 +87,40 @@ public class RequirmentBean {
 	public void changeProjectStatus() throws IOException {
 		
 		projectService.editProject(project);
+		FacesContext fContext = FacesContext.getCurrentInstance();
+		ExternalContext extContext = fContext.getExternalContext();
+		extContext.redirect(extContext.getRequestContextPath() + "/BusinessAnalyst/BusinessAnalyst.xhtml");
+	}
+	
+	public void removeRequirment() {
+		System.out.println(toDelete);
+		if(toDelete.getStatus().getNameStatus().equals("Done")) {
+			
+			toDelete.setValidity((byte) 0);
+			requirmentService.removeRequirment(toDelete);
+			requirements = requirmentService.getProjectRequirements(idProject);
+			
+			FacesContext context = FacesContext.getCurrentInstance();
+
+			context.addMessage(null, new FacesMessage("Success Requirement " +toDelete.getNameRequirment()+"  Deleted"));
+		}
+		else {
+			
+			FacesContext context = FacesContext.getCurrentInstance();
+
+			context.addMessage(null, new FacesMessage("!! Set Status as Done to delete Requirement"));
+		}
+	}
+	
+	public void editRequirment() {
+		
+		toEdit.setValidity((byte) 1);
+		toEdit.setProject(project);
+		requirmentService.editRequirment(toEdit);
+		requirements = requirmentService.getProjectRequirements(idProject);
 		FacesContext context = FacesContext.getCurrentInstance();
-		context.getExternalContext().redirect("BusinessAnalyst.xhtml");
+
+		context.addMessage(null, new FacesMessage("Success Requirment"+toEdit.getNameRequirment() +"Edited"));
 	}
 	
 	public List<Requirment> getRequrements() {
@@ -196,4 +238,25 @@ public class RequirmentBean {
 	public void setRequirmentTasks(List<Task> requirmentTasks) {
 		this.requirmentTasks = requirmentTasks;
 	}
+
+	
+
+
+	public Requirment getToDelete() {
+		return toDelete;
+	}
+
+	public void setToDelete(Requirment toDelete) {
+		this.toDelete = toDelete;
+	}
+
+	public Requirment getToEdit() {
+		return toEdit;
+	}
+
+	public void setToEdit(Requirment toEdit) {
+		this.toEdit = toEdit;
+	}
+
+	
 }

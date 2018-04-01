@@ -40,5 +40,49 @@
   <listener>
     <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
   </listener>
+<filter>
+		<filter-name>MyFilter</filter-name>
+		<filter-class>com.ikubinfo.internship.project.utils.MyFilter</filter-class>
+	</filter>
 
+	<filter-mapping>
+		<filter-name>MyFilter</filter-name>
+		<url-pattern>/BusinessAnalyst/*</url-pattern>
+		<url-pattern>/Developer/*</url-pattern>
+		<url-pattern>/Teamleader/*</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>BusinessAnalystFilter</filter-name>
+		<filter-class>com.ikubinfo.internship.project.utils.BusinessAnalystFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>BusinessAnalystFilter</filter-name>
+		<url-pattern>/ProjectManager/*</url-pattern>
+		<url-pattern>/Developer/*</url-pattern>
+		<url-pattern>/Teamleader/*</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>TeamLeaderFilter</filter-name>
+		<filter-class>com.ikubinfo.internship.project.utils.TeamLeaderFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>TeamLeaderFilter</filter-name>
+		<url-pattern>/ProjectManager/*</url-pattern>
+		<url-pattern>/Developer/*</url-pattern>
+		<url-pattern>/BusinessAnalyst/*</url-pattern>
+	</filter-mapping>
+	
+		<filter>
+		<filter-name>DeveloperFilter</filter-name>
+		<filter-class>com.ikubinfo.internship.project.utils.DeveloperFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>DeveloperFilter</filter-name>
+		<url-pattern>/ProjectManager/*</url-pattern>
+		<url-pattern>/TeamLeader/*</url-pattern>
+		<url-pattern>/BusinessAnalyst/*</url-pattern>
+	</filter-mapping>
 </web-app>

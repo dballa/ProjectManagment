@@ -20,7 +20,7 @@ import com.ikubinfo.internship.project.service.LoginService;
 public class LoginBean {
 
 	private User user;
-	
+
 	private List<PermissionEntity> permissionList;
 
 	@ManagedProperty(value = "#{loginService}")
@@ -29,20 +29,19 @@ public class LoginBean {
 	@PostConstruct
 	public void init() {
 		user = new User();
-		//foundUser=new User();
+		// foundUser=new User();
 		permissionList = new ArrayList<PermissionEntity>();
 	}
 
 	public void login() throws IOException {
-		System.out.println(user.getEmail());
+
 		user = loginService.login(user);
-		System.out.println(user);
+
 		FacesContext context = FacesContext.getCurrentInstance();
 
-		if (user== null) {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Wrong user name or password ", "Error logging in"));
+		if (user == null) {
 
+			context.addMessage(null, new FacesMessage("Wrong Email or Password"));
 		}
 
 		else {
@@ -53,18 +52,18 @@ public class LoginBean {
 
 			if (user.getRole().getNameRole().equals("Project Manager")) {
 
-				context.getExternalContext().redirect("ProjectManager.xhtml");
+				context.getExternalContext().redirect("ProjectManager/ProjectManager.xhtml");
 			} else if (user.getRole().getNameRole().equals("Team Leader")) {
 
-				context.getExternalContext().redirect("TeamLeader.xhtml");
+				context.getExternalContext().redirect("TeamLeader/TeamLeader.xhtml");
 			} else if (user.getRole().getNameRole().equals("Developer")) {
 
-				context.getExternalContext().redirect("Developer.xhtml");
+				context.getExternalContext().redirect("Developer/Developer.xhtml");
 			} else if (user.getRole().getNameRole().equals("Business Analyst")) {
 
-				context.getExternalContext().redirect("BusinessAnalyst.xhtml");
+				context.getExternalContext().redirect("BusinessAnalyst/BusinessAnalyst.xhtml");
 			}
-			// permissionList = loginService.findPermissions(user);
+
 		}
 
 	}

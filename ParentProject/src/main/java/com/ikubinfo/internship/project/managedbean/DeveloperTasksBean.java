@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -21,12 +22,10 @@ public class DeveloperTasksBean {
 	private int idProject;
 	private int idUser;
 	private Task selectedTask;
-	private List<Status> statusList = new ArrayList<Status>();
-	private List<Status> filtredStatus = new ArrayList<Status>();
+
 	@ManagedProperty(value = "#{taskService}")
 	private TaskService taskService;
-	@ManagedProperty(value = "#{commonDataBean}")
-	private CommonDataBean commonDataBean;
+	
 
 	@PostConstruct
 	public void init() {
@@ -35,27 +34,18 @@ public class DeveloperTasksBean {
 		String id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
 		idProject = Integer.parseInt(id);
 		tasks = taskService.getTasksOfDeveloper(idProject, idUser);
-		filtredStatus();
+	
 
 	}
 	
 	public void editTask() {
 		taskService.editTask(selectedTask);
-		
+		FacesContext context = FacesContext.getCurrentInstance();
+
+		context.addMessage(null, new FacesMessage("Success Task"+selectedTask.getNameTask()+"  Edited"));
 	}
 
-	public List<Status> filtredStatus() {
-		statusList = commonDataBean.getStatusList();
-
-		for (Status status : statusList) {
-
-			if (!"Waiting BA".equals(status.getNameStatus())) {
-
-				filtredStatus.add(status);
-			}
-		}
-		return filtredStatus;
-	}
+	
 
 	public int getIdProject() {
 		return idProject;
@@ -97,27 +87,9 @@ public class DeveloperTasksBean {
 		this.selectedTask = selectedTask;
 	}
 
-	public List<Status> getStatusList() {
-		return statusList;
-	}
 
-	public List<Status> getFiltredStatus() {
-		return filtredStatus;
-	}
 
-	public CommonDataBean getCommonDataBean() {
-		return commonDataBean;
-	}
+	
 
-	public void setStatusList(List<Status> statusList) {
-		this.statusList = statusList;
-	}
 
-	public void setFiltredStatus(List<Status> filtredStatus) {
-		this.filtredStatus = filtredStatus;
-	}
-
-	public void setCommonDataBean(CommonDataBean commonDataBean) {
-		this.commonDataBean = commonDataBean;
-	}
 }

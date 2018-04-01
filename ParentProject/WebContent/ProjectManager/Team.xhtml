@@ -58,7 +58,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 			<b>Menu</b>
 		</h4>
 		<h:commandLink class="w3-bar-item w3-button w3-hover-black"
-			value="Project" action="ProjectManager.xhtml" />
+			value="Project" action="ProjectManager.xhtml?faces-redirect=true" />
 			
 			<h:commandLink class="w3-bar-item w3-button w3-hover-black"
 			value="Team" action="Team.xhtml" />
@@ -92,7 +92,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 
 						<p:column >
 							<p:commandButton  icon="ui-icon-trash" id="deleteButton" title="Delete"
-								action="#{teamBean.removeTeam}" update="teamTable growl "
+								action="#{teamBean.removeTeam}" update=" teamTable growl "
 								process="@form" ajax="true">
 								<f:setPropertyActionListener value="#{team}"
 									target="#{teamBean.toDelete}"></f:setPropertyActionListener>

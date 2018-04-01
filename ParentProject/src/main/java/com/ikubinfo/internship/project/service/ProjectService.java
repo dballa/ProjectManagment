@@ -39,7 +39,7 @@ public class ProjectService {
 	}
 
 	public void editProject(Project project) {
-
+project.setValidity((byte) 1);
 		projectDao.editProject(project);
 
 	}

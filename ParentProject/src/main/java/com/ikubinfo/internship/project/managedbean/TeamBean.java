@@ -12,7 +12,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
-import com.ikubinfo.internship.project.dao.TeamInProjectException;
+
 import com.ikubinfo.internship.project.pojo.Team;
 import com.ikubinfo.internship.project.pojo.User;
 import com.ikubinfo.internship.project.service.TeamService;
@@ -53,19 +53,13 @@ public class TeamBean {
 
 	public void removeTeam() {
 
-		try {
+		
 			teamService.removeTeam(toDelete);
-		} catch (TeamInProjectException e) {
-
-			FacesContext context = FacesContext.getCurrentInstance();
-
-			context.addMessage(null, new FacesMessage(e.getMessage()));
-
-		}
-
+		
+			teams = teamService.allTeams();
 		FacesContext context = FacesContext.getCurrentInstance();
 
-		context.addMessage(null, new FacesMessage("Success", "Team" + team.getNameTeam() + " Deleted"));
+		context.addMessage(null, new FacesMessage("Success Team" + team.getNameTeam() + " Deleted"));
 	}
 
 	public void findTeamInfo() {
@@ -80,7 +74,7 @@ public class TeamBean {
 
 		FacesContext fContext = FacesContext.getCurrentInstance();
 		ExternalContext extContext = fContext.getExternalContext();
-		extContext.redirect(extContext.getRequestContextPath() + "/EditTeam.xhtml?id=" + toEditId);
+		extContext.redirect(extContext.getRequestContextPath() + "/ProjectManager/EditTeam.xhtml?id=" + toEditId);
 	}
 
 	public Team getTeam() {

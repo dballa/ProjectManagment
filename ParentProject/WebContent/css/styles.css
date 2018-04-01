@@ -13,7 +13,14 @@ body {
 }
 
 
-
+.login {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -150px 0 0 -150px;
+	width: 300px;
+	height: 300px;
+}
 
 /* Style the header */
 .header {
@@ -28,6 +35,12 @@ body {
     text-align: center;
     font-size: 15px;
     
+}
+.header3 {
+    background-color: transparent;
+    padding: 150px;
+    text-align: center;
+    font-size: 35px;
 }
 
 /* Create three unequal columns that floats next to each other */

@@ -29,26 +29,24 @@ public class ProjectManagerBean {
 	private Project toDelete;
 	private int toEditId;
 	private List<Team> teams = new ArrayList<Team>();
-	private List<Status> status = new ArrayList<Status>();
+//	private List<Status> status = new ArrayList<Status>();
 	private Team team;
 	private int createdBy;
 	@ManagedProperty(value = "#{projectService}")
 	private ProjectService projectService;
 	@ManagedProperty(value = "#{teamService}")
 	private TeamService teamService;
-	@ManagedProperty(value = "#{statusService}")
-	private StatusService statusService;
+
 
 	@PostConstruct
 	public void init() {
 
-		
 		project = new Project();
 		teams = teamService.allTeams();
-		status = statusService.allStatus();
+	//	status = statusService.allStatus();
 		toDelete = new Project();
 		FacesContext context = FacesContext.getCurrentInstance();
-		createdBy =   (int) context.getExternalContext().getSessionMap().get("userId");
+		createdBy = (int) context.getExternalContext().getSessionMap().get("userId");
 		projects = projectService.allProjects(createdBy);
 	}
 
@@ -62,22 +60,21 @@ public class ProjectManagerBean {
 
 		FacesContext fContext = FacesContext.getCurrentInstance();
 		ExternalContext extContext = fContext.getExternalContext();
-		extContext.redirect(extContext.getRequestContextPath() + "/Project.xhtml?id=" + toEditId);
+		extContext.redirect(extContext.getRequestContextPath() + "/ProjectManager/Project.xhtml?id=" + toEditId);
 
 	}
 
 	public void addProject() {
-		if(project.getEndDate().after(project.getStartDate()) ) {
-		project.setCreatedBy(createdBy);
-		project.setValidity((byte) 1);
-		projectService.addProject(project);
-		projects = projectService.allProjects(createdBy);
+		if (project.getEndDate().after(project.getStartDate())) {
+			project.setCreatedBy(createdBy);
+			project.setValidity((byte) 1);
+			projectService.addProject(project);
+			projects = projectService.allProjects(createdBy);
 
-		FacesContext context = FacesContext.getCurrentInstance();
+			FacesContext context = FacesContext.getCurrentInstance();
 
-		context.addMessage(null, new FacesMessage("Success"+ "Project " + project.getNameProject() + " Added"));
-		}
-		else {
+			context.addMessage(null, new FacesMessage("Success  Project " + project.getNameProject() + " Added"));
+		} else {
 			FacesContext context = FacesContext.getCurrentInstance();
 
 			context.addMessage(null, new FacesMessage("!! End date should be after start date"));
@@ -85,13 +82,28 @@ public class ProjectManagerBean {
 	}
 
 	public void removeProject() {
-		toDelete.setValidity((byte) 0);
+		if (toDelete.getStatus().getNameStatus().equals("Done")) {
+			toDelete.setValidity((byte) 0);
 
-		projectService.removeProject(toDelete);
-		projects = projectService.allProjects(createdBy);
-		FacesContext context = FacesContext.getCurrentInstance();
+			projectService.removeProject(toDelete);
+			projects = projectService.allProjects(createdBy);
+			FacesContext context = FacesContext.getCurrentInstance();
 
-		context.addMessage(null, new FacesMessage("Success", "Project " + toDelete.getNameProject() + " Deleted"));
+			context.addMessage(null, new FacesMessage("Success Project " + toDelete.getNameProject() + " Deleted"));
+		}
+		else {
+			FacesContext context = FacesContext.getCurrentInstance();
+
+			context.addMessage(null, new FacesMessage("Set status as Done to delete a project"));
+			
+		}
+	}
+	
+	public boolean check() {
+		if(project.getStatus().getNameStatus().equals("Waiting BA")) {
+			return true;
+		}
+		else return false;	
 	}
 
 	public void test() {
@@ -139,21 +151,7 @@ public class ProjectManagerBean {
 		this.teams = teams;
 	}
 
-	public List<Status> getStatus() {
-		return status;
-	}
 
-	public void setStatus(List<Status> status) {
-		this.status = status;
-	}
-
-	public StatusService getStatusService() {
-		return statusService;
-	}
-
-	public void setStatusService(StatusService statusService) {
-		this.statusService = statusService;
-	}
 
 	public Team getTeam() {
 		return team;

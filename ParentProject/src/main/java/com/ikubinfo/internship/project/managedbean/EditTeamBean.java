@@ -9,6 +9,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import com.ikubinfo.internship.project.pojo.Member;
+import com.ikubinfo.internship.project.pojo.MemberPK;
 import com.ikubinfo.internship.project.pojo.Team;
 import com.ikubinfo.internship.project.pojo.User;
 import com.ikubinfo.internship.project.service.TeamService;
@@ -28,6 +30,8 @@ public class EditTeamBean {
 	private User projectManager;
 	private User businessAnalyst;
 	private User teamLeader;
+	private Member member=new Member();
+	private MemberPK memberPk=new MemberPK();
 
 	@ManagedProperty(value = "#{userService}")
 	private UserService userService;
@@ -47,7 +51,7 @@ public class EditTeamBean {
 			if (user.getRole().getNameRole().equals("Project Manager")) {
 
 				userPm.add(user);
-			} else if (user.getRole().getNameRole().equals("Team Lider")) {
+			} else if (user.getRole().getNameRole().equals("Team Leader")) {
 				userTl.add(user);
 			} else if (user.getRole().getNameRole().equals("Developer")) {
 				userDev.add(user);
@@ -57,6 +61,15 @@ public class EditTeamBean {
 
 		}
 
+	}
+	
+	
+	
+	public void editTeam() {
+		
+		teamService.editTeam(projectManager, toEdit, member,memberPk);
+	
+	
 	}
 
 	public Team getToEdit() {
@@ -161,6 +174,30 @@ public class EditTeamBean {
 
 	public void setTeamLeader(User teamLeader) {
 		this.teamLeader = teamLeader;
+	}
+
+
+
+	public Member getMember() {
+		return member;
+	}
+
+
+
+	public void setMember(Member member) {
+		this.member = member;
+	}
+
+
+
+	public MemberPK getMemberPk() {
+		return memberPk;
+	}
+
+
+
+	public void setMemberPk(MemberPK memberPk) {
+		this.memberPk = memberPk;
 	}
 
 }

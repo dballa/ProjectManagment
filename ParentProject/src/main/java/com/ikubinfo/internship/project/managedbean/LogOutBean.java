@@ -13,7 +13,7 @@ public class LogOutBean {
 		FacesContext context = FacesContext.getCurrentInstance();
 		context.getExternalContext().invalidateSession();
 		try {
-			context.getExternalContext().redirect("Login.xhtml");
+			context.getExternalContext().redirect("/ProjectManagment/Login.xhtml");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

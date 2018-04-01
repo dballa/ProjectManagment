@@ -28,5 +28,12 @@ public class RequirmentService {
 		
 		return requirmentDao.getRequirementById(id);
 	}
-	
+	public void removeRequirment(Requirment requirment) {
+		
+		requirmentDao.removeRequirement(requirment);
+	}
+	public void editRequirment(Requirment requirment) {
+		
+		requirmentDao.editRequirment(requirment);
+	}
 }

@@ -70,7 +70,7 @@
 
 							<f:selectItem noSelectionOption="true"
 								itemLabel="Selected is : #{editProject.toEdit.status.nameStatus}" />
-							<f:selectItems value="#{editProject.status}" var="status"
+							<f:selectItems value="#{commonDataBean.statusList}" var="status"
 								itemLabel="#{status.nameStatus}" />
 
 						</p:selectOneMenu>

@@ -16,7 +16,7 @@ public class MemberEntity implements Serializable {
 
 	@EmbeddedId
 	private MemberPKEntity id;
-
+	
 	private byte validity;
 
 	//bi-directional many-to-one association to Team

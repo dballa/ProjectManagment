@@ -48,7 +48,7 @@ public class TeamLeaderRequirementsBean {
 	public String redirectToTaskCreate() throws IOException {
 		userSessionBean.setCurrentProject(project);
 		System.out.println("requirmentId: " + requirmentId);
-		return "TlCreateTasks.xhtml?faces-redirect=true&idreq=" + requirmentId;
+		return "/TeamLeader/TlCreateTasks.xhtml?faces-redirect=true&idreq=" + requirmentId;
 	}
 
 	public List<Requirment> getRequirments() {

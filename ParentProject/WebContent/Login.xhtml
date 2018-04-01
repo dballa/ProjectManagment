@@ -28,27 +28,24 @@
 					
 
 				</div>
-
+<p:growl id="growl" showDetail="true" life="2000" />
 				<h:form >
 					<div class="w3-section">
 						<p:outputLabel value="Email" for="email" />
 						<p:inputText id="email"
 							class="w3-input w3-border w3-margin-bottom"
 							value="#{loginBean.user.email}" />
-						<label><b>Password</b></label>
+						<label>Password</label>
 						<p:inputText class="w3-input w3-border"
 							value="#{loginBean.user.password}" type="password"/>
 						<p:commandButton
 							class="w3-button w3-block w3-section w3-padding"
-							value="Login" actionListener="#{loginBean.login}" />
+							value="Login" actionListener="#{loginBean.login}" update="growl" />
 
 					</div>
 				</h:form>
 
-				<div class="w3-container w3-border-top w3-padding-16 w3-red">
-					
-
-				</div>
+				
 
 			</div>
 		</div>

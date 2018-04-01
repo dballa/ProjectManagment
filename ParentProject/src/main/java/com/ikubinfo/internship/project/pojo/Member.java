@@ -46,5 +46,13 @@ public class Member {
 		this.user = user;
 	}
 
+	@Override
+	public String toString() {
+		return "Member [id=" + id + ", validity=" + validity + ",  user=" + user + "]";
+	}
+
+
+
+
 }
 

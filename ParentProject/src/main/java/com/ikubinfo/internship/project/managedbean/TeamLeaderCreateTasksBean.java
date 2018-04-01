@@ -39,10 +39,7 @@ public class TeamLeaderCreateTasksBean {
 	private RequirmentService requirmentService;
 	@ManagedProperty(value = "#{taskService}")
 	private TaskService taskService;
-	@ManagedProperty(value = "#{statusService}")
-	private StatusService statusService;
-	@ManagedProperty(value = "#{priorityService}")
-	private PriorityService priorityService;
+
 	@ManagedProperty(value = "#{userService}")
 	private UserService userService;
 	@ManagedProperty(value = "#{userSessionBean}")
@@ -65,56 +62,59 @@ public class TeamLeaderCreateTasksBean {
 
 	}
 
-public void addTask() {
-	if(task.getEndDate().after(task.getStartDate())) {
-		task.setRequirment(currentRequirement);
-		task.setValidity((byte) 1);
-		task.setCreatedBy(userId);
-		System.out.println(task.getRequirment());
-		taskService.addTask(task);
-		tasks = taskService.requirmentTasks(idRequirment);
-		FacesContext context = FacesContext.getCurrentInstance();
+	public void addTask() {
+		if (task.getEndDate().after(task.getStartDate())) {
+			task.setRequirment(currentRequirement);
+			task.setValidity((byte) 1);
+			task.setCreatedBy(userId);
 
-		context.addMessage(null, new FacesMessage("Success"+"Task " + task.getNameTask() + " Added"));
-	}
-	else {
-		FacesContext context = FacesContext.getCurrentInstance();
+			taskService.addTask(task);
+			tasks = taskService.requirmentTasks(idRequirment);
+			FacesContext context = FacesContext.getCurrentInstance();
 
-		context.addMessage(null, new FacesMessage("!! End date should be after start date"));
-	}
-	
-	}
-		
-public void editTask() {
-	if(toEdit.getEndDate().after(toEdit.getStartDate())) {
-		toEdit.setRequirment(currentRequirement);
-		toEdit.setValidity((byte) 1);
-		toEdit.setCreatedBy(userId);
-	
-		taskService.editTask(toEdit);
-		tasks = taskService.requirmentTasks(idRequirment);
-		FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage("Success" + "Task " + task.getNameTask() + " Added"));
+		} else {
+			FacesContext context = FacesContext.getCurrentInstance();
 
-		context.addMessage(null, new FacesMessage("Success"+"Task " + toEdit.getNameTask() + " Edited"));
-	}
-	else {
-		FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage("!! End date should be after start date"));
+		}
 
-		context.addMessage(null, new FacesMessage("!! End date should be after start date"));
 	}
-	
-	
-	
-}
+
+	public void editTask() {
+		if (toEdit.getEndDate().after(toEdit.getStartDate())) {
+			toEdit.setRequirment(currentRequirement);
+			toEdit.setValidity((byte) 1);
+			toEdit.setCreatedBy(userId);
+
+			taskService.editTask(toEdit);
+			tasks = taskService.requirmentTasks(idRequirment);
+			FacesContext context = FacesContext.getCurrentInstance();
+
+			context.addMessage(null, new FacesMessage("Success" + "Task " + toEdit.getNameTask() + " Edited"));
+		} else {
+			FacesContext context = FacesContext.getCurrentInstance();
+
+			context.addMessage(null, new FacesMessage("!! End date should be after start date"));
+		}
+
+	}
+
 	public void removeTask() {
-		System.out.println(toDelete);
-		toDelete.setValidity((byte) 0);
+		if (toDelete.getStatus().getNameStatus().equals("Done")) {
 
-		taskService.removeTask(toDelete);
-		tasks = taskService.requirmentTasks(idRequirment);
-		FacesContext context = FacesContext.getCurrentInstance();
+			toDelete.setValidity((byte) 0);
 
-		context.addMessage(null, new FacesMessage("Success", "Task " + toDelete.getNameTask() + " Deleted"));
+			taskService.removeTask(toDelete);
+			tasks = taskService.requirmentTasks(idRequirment);
+			FacesContext context = FacesContext.getCurrentInstance();
+
+			context.addMessage(null, new FacesMessage("Success", "Task " + toDelete.getNameTask() + " Deleted"));
+		} else {
+			FacesContext context = FacesContext.getCurrentInstance();
+
+			context.addMessage(null, new FacesMessage("Set status as DONE to delete task"));
+		}
 	}
 
 	public int getIdRequirment() {
@@ -163,22 +163,6 @@ public void editTask() {
 
 	public void setDevelopers(List<User> developers) {
 		this.developers = developers;
-	}
-
-	public StatusService getStatusService() {
-		return statusService;
-	}
-
-	public void setStatusService(StatusService statusService) {
-		this.statusService = statusService;
-	}
-
-	public PriorityService getPriorityService() {
-		return priorityService;
-	}
-
-	public void setPriorityService(PriorityService priorityService) {
-		this.priorityService = priorityService;
 	}
 
 	public UserService getUserService() {
