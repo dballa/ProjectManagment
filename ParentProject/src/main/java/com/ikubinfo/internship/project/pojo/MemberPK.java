@@ -22,6 +22,7 @@ public class MemberPK {
 	}
 	@Override
 	public String toString() {
-		return "MemberPK [idTeam=" + idTeam + "]";
+		return "MemberPK [idTeam=" + idTeam + ", member=" + member + "]";
 	}
+
 }

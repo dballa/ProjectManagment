@@ -45,12 +45,14 @@ public class TeamService {
 	
 
 public void editTeam(User user,Team team,Member member,MemberPK memberPk) {
+
 	memberPk.setIdTeam(team.getIdTeam());
 	memberPk.setMember(user.getIdUser());
 	member.setTeam(team);
 		member.setUser(user);
 		member.setId(memberPk);
-		
+		member.setValidity((byte) 1);
+		team.getMembers().clear();
 		team.getMembers().add(member);
 	
 	

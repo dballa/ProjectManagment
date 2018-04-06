@@ -18,6 +18,7 @@ import com.ikubinfo.internship.project.pojo.Team;
 import com.ikubinfo.internship.project.service.ProjectService;
 import com.ikubinfo.internship.project.service.StatusService;
 import com.ikubinfo.internship.project.service.TeamService;
+import com.ikubinfo.internship.project.utils.RedirectUtils;
 
 @ManagedBean
 @ViewScoped
@@ -29,7 +30,7 @@ public class ProjectManagerBean {
 	private Project toDelete;
 	private int toEditId;
 	private List<Team> teams = new ArrayList<Team>();
-//	private List<Status> status = new ArrayList<Status>();
+
 	private Team team;
 	private int createdBy;
 	@ManagedProperty(value = "#{projectService}")
@@ -37,13 +38,12 @@ public class ProjectManagerBean {
 	@ManagedProperty(value = "#{teamService}")
 	private TeamService teamService;
 
-
 	@PostConstruct
 	public void init() {
 
 		project = new Project();
 		teams = teamService.allTeams();
-	//	status = statusService.allStatus();
+
 		toDelete = new Project();
 		FacesContext context = FacesContext.getCurrentInstance();
 		createdBy = (int) context.getExternalContext().getSessionMap().get("userId");
@@ -58,9 +58,8 @@ public class ProjectManagerBean {
 
 	public void redirectToProject() throws IOException {
 
-		FacesContext fContext = FacesContext.getCurrentInstance();
-		ExternalContext extContext = fContext.getExternalContext();
-		extContext.redirect(extContext.getRequestContextPath() + "/ProjectManager/Project.xhtml?id=" + toEditId);
+		RedirectUtils.redirectTo("/ProjectManager/Project.xhtml?id=" + toEditId);
+		
 
 	}
 
@@ -90,26 +89,17 @@ public class ProjectManagerBean {
 			FacesContext context = FacesContext.getCurrentInstance();
 
 			context.addMessage(null, new FacesMessage("Success Project " + toDelete.getNameProject() + " Deleted"));
-		}
-		else {
+		} else {
 			FacesContext context = FacesContext.getCurrentInstance();
 
 			context.addMessage(null, new FacesMessage("Set status as Done to delete a project"));
-			
+
 		}
-	}
-	
-	public boolean check() {
-		if(project.getStatus().getNameStatus().equals("Waiting BA")) {
-			return true;
-		}
-		else return false;	
 	}
 
-	public void test() {
-		FacesContext context = FacesContext.getCurrentInstance();
-		System.out.println(context.getExternalContext().getSessionMap().get("userPermissions"));
-	}
+	
+
+	
 
 	public ProjectService getProjectService() {
 		return projectService;
@@ -150,8 +140,6 @@ public class ProjectManagerBean {
 	public void setTeams(List<Team> teams) {
 		this.teams = teams;
 	}
-
-
 
 	public Team getTeam() {
 		return team;

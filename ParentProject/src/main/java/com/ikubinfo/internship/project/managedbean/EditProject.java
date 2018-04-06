@@ -18,52 +18,80 @@ import com.ikubinfo.internship.project.pojo.Team;
 import com.ikubinfo.internship.project.service.ProjectService;
 import com.ikubinfo.internship.project.service.StatusService;
 import com.ikubinfo.internship.project.service.TeamService;
+import com.ikubinfo.internship.project.utils.RedirectUtils;
 
 @ManagedBean
 @ViewScoped
 public class EditProject {
 
+	private static final String NOT_FOUND = "/PageNotFound.xhtml";
+	private static final String PROJECT_MANAGER = "/ProjectManager/ProjectManager.xhtml";
 	private Project toEdit;
 	private List<Team> teams = new ArrayList<Team>();
 	private List<Status> status = new ArrayList<Status>();
+	private String id;
 
 	@ManagedProperty(value = "#{projectService}")
 	private ProjectService projectService;
 	@ManagedProperty(value = "#{teamService}")
 	private TeamService teamService;
-	@ManagedProperty(value = "#{statusService}")
-	private StatusService statusService;
+	@ManagedProperty(value = "#{userSessionBean}")
+	private UserSessionBean userSessionBean;
 
 	@PostConstruct
 	public void init() {
-		String id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
-		int toEditId = Integer.parseInt(id);
-		toEdit = projectService.getProjectById(toEditId);
+
 		teams = teamService.allTeams();
-		status = statusService.allStatus();
-		
+
+	}
+
+	public void getProject() throws IOException {
+		if (isNullOrEmpty()) {
+
+			RedirectUtils.redirectTo(NOT_FOUND);
+
+		}
+
+		else {
+
+			int toEditId = Integer.parseInt(id);
+
+			System.out.println(userSessionBean.getUserId());
+
+			if (projectService.accessProject(userSessionBean.getUserId(), toEditId)) {
+				toEdit = projectService.getProjectById(toEditId);
+			} else {
+
+				RedirectUtils.redirectTo(NOT_FOUND);
+
+			}
+
+		}
+
+	}
+
+	private boolean isNullOrEmpty() {
+		return (id == null || id.trim().isEmpty());
+
 	}
 
 	public void editProject() throws IOException {
-		if(toEdit.getEndDate().after(toEdit.getStartDate()) ) {
-		toEdit.setValidity((byte) 1);
-		projectService.editProject(toEdit);
-		FacesContext fContext = FacesContext.getCurrentInstance();
-		ExternalContext extContext = fContext.getExternalContext();
-		extContext.redirect(extContext.getRequestContextPath() + "/ProjectManager/ProjectManager.xhtml");
-		}
-		else {
+		if (toEdit.getEndDate().after(toEdit.getStartDate())) {
+			toEdit.setValidity((byte) 1);
+			projectService.editProject(toEdit);
+			RedirectUtils.redirectTo(PROJECT_MANAGER);
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage("Success project" + toEdit.getNameProject() + "Edited"));
+		} else {
 			FacesContext context = FacesContext.getCurrentInstance();
 
 			context.addMessage(null, new FacesMessage("!! End date should be after start date"));
 		}
 	}
-	
+
 	public void redirectToPM() throws IOException {
-		FacesContext fContext = FacesContext.getCurrentInstance();
-		ExternalContext extContext = fContext.getExternalContext();
-		extContext.redirect(extContext.getRequestContextPath() + "/ProjectManager/ProjectManager.xhtml");
-		
+		RedirectUtils.redirectTo(PROJECT_MANAGER);
+
 	}
 
 	public Project getToEdit() {
@@ -102,16 +130,24 @@ public class EditProject {
 		return status;
 	}
 
-	public StatusService getStatusService() {
-		return statusService;
-	}
-
 	public void setStatus(List<Status> status) {
 		this.status = status;
 	}
 
-	public void setStatusService(StatusService statusService) {
-		this.statusService = statusService;
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public UserSessionBean getUserSessionBean() {
+		return userSessionBean;
+	}
+
+	public void setUserSessionBean(UserSessionBean userSessionBean) {
+		this.userSessionBean = userSessionBean;
 	}
 
 }

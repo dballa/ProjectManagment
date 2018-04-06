@@ -101,7 +101,7 @@ public class TeamDao {
 	public void editTeam(Team team) {
 		Session session = sessionFactory.getCurrentSession();
 		System.out.println(team);
-	session.update(TEAM_CONVERTER.fromPojoToEntity(team));
+	session.merge(TEAM_CONVERTER.fromPojoToEntity(team));
 		
 	}
 }

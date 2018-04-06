@@ -2,6 +2,8 @@ package com.ikubinfo.internship.project.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -25,8 +27,8 @@ public class TeamEntity implements Serializable {
 	private byte validity;
 
 	//bi-directional many-to-one association to Member
-	@OneToMany(mappedBy="team", cascade=CascadeType.PERSIST)
-	private List<MemberEntity> members;
+	@OneToMany(mappedBy="team",cascade=CascadeType.MERGE)
+	private List<MemberEntity> members=new ArrayList<MemberEntity>();
 
 	//bi-directional many-to-one association to Project
 	@OneToMany(mappedBy="team")
@@ -101,6 +103,49 @@ public class TeamEntity implements Serializable {
 		project.setTeam(null);
 
 		return project;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + idTeam;
+		result = prime * result + ((members == null) ? 0 : members.hashCode());
+		result = prime * result + ((nameTeam == null) ? 0 : nameTeam.hashCode());
+		result = prime * result + ((projects == null) ? 0 : projects.hashCode());
+		result = prime * result + validity;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TeamEntity other = (TeamEntity) obj;
+		if (idTeam != other.idTeam)
+			return false;
+		if (members == null) {
+			if (other.members != null)
+				return false;
+		} else if (!members.equals(other.members))
+			return false;
+		if (nameTeam == null) {
+			if (other.nameTeam != null)
+				return false;
+		} else if (!nameTeam.equals(other.nameTeam))
+			return false;
+		if (projects == null) {
+			if (other.projects != null)
+				return false;
+		} else if (!projects.equals(other.projects))
+			return false;
+		if (validity != other.validity)
+			return false;
+		return true;
 	}
 
 	@Override

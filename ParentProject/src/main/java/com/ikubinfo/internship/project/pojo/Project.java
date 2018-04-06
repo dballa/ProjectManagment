@@ -38,7 +38,17 @@ public class Project {
 	
 	private Status status;
 
-	
+	private boolean disabled;
+
+
+	public boolean isDisabled() {
+		return "Waiting BA".equals(status.getNameStatus());
+	}
+
+	public void setDisabled(boolean disabled) {
+		this.disabled = disabled;
+	}
+
 	private List<Requirment> requirments;
 
 	public Project() {

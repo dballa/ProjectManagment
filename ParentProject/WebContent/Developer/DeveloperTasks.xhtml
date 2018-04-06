@@ -66,10 +66,16 @@ html, body, h1, h2, h3, h4, h5, h6 {
 	<div class="w3-main" style="margin-left: 250px">
 
 		<div class="w3-row w3-padding-64">
+	
 			<h:form id="form">
 				<div class="w3-twothird w3-container" style="width: 85%">
-
-
+		<h:panelGrid columns="5">
+		<h:outputLabel for="TaskName" value="Name:"/>
+		<p:inputText id="TaskName" value="#{developerTasksBean.filter.name}"/>
+		<h:outputLabel for="TaskDsc" value="Description:" />
+		<p:inputText id="TaskDsc" value="#{developerTasksBean.filter.description}"/>
+		<p:commandButton value="Search" actionListener="#{developerTasksBean.searchTask}"  update="tasks" ajax="true" />
+</h:panelGrid>
 					<p:dataGrid var="task" value="#{developerTasksBean.tasks}"
 						columns="3" layout="grid" rows="12" paginator="true" id="tasks"
 						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"

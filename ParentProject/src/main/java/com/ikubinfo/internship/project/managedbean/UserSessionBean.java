@@ -17,13 +17,15 @@ public class UserSessionBean {
 	private String userName;
 	private List<Permission> userPermission = new ArrayList<Permission>();
 	private Project currentProject;
-
+	private int userId;
 	@PostConstruct
 	public void init() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		userName = (String) context.getExternalContext().getSessionMap().get("userName");
 		userPermission = (List<Permission>) context.getExternalContext().getSessionMap().get("userPermissions");
-		System.out.println(userPermission);
+		userId=(int) context.getExternalContext().getSessionMap().get("userId");
+		System.out.println(userId);
+		
 	}
 
 	public String getUserName() {
@@ -48,5 +50,13 @@ public class UserSessionBean {
 
 	public void setUserPermission(List<Permission> userPermission) {
 		this.userPermission = userPermission;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 }

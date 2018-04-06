@@ -22,6 +22,7 @@ import com.ikubinfo.internship.project.service.ProjectService;
 import com.ikubinfo.internship.project.service.RequirmentService;
 import com.ikubinfo.internship.project.service.StatusService;
 import com.ikubinfo.internship.project.service.TaskService;
+import com.ikubinfo.internship.project.utils.RedirectUtils;
 
 @ManagedBean
 @ViewScoped
@@ -33,7 +34,7 @@ public class RequirmentBean {
 	private int idProject;
 	private Requirment requirment;
 	private Project project = new Project();
-	
+	private static final String BUSINESS_ANALYST=  "/BusinessAnalyst/BusinessAnalyst.xhtml";
 	private Requirment showTasks;
 	private List<Task> requirmentTasks=new ArrayList<Task>();
 	private Requirment toDelete;
@@ -87,9 +88,8 @@ public class RequirmentBean {
 	public void changeProjectStatus() throws IOException {
 		
 		projectService.editProject(project);
-		FacesContext fContext = FacesContext.getCurrentInstance();
-		ExternalContext extContext = fContext.getExternalContext();
-		extContext.redirect(extContext.getRequestContextPath() + "/BusinessAnalyst/BusinessAnalyst.xhtml");
+		RedirectUtils.redirectTo(BUSINESS_ANALYST);
+		
 	}
 	
 	public void removeRequirment() {

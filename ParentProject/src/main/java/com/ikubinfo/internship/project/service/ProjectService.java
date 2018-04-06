@@ -58,4 +58,8 @@ project.setValidity((byte) 1);
 		
 		 return filtredProjects;
 	}
+	
+	public boolean accessProject(int idUser,int idProject) {
+		return projectDao.accessProject(idUser, idProject);
+	}
 }

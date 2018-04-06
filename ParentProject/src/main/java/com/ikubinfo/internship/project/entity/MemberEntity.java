@@ -20,11 +20,13 @@ public class MemberEntity implements Serializable {
 	private byte validity;
 
 	//bi-directional many-to-one association to Team
+	@MapsId("idTeam") 
 	@ManyToOne
 	@JoinColumn(name="IdTeam")
 	private TeamEntity team;
 
 	//bi-directional many-to-one association to User
+	@MapsId("member") 
 	@ManyToOne
 	@JoinColumn(name="Member")
 	private UserEntity user;
@@ -62,6 +64,40 @@ public class MemberEntity implements Serializable {
 
 	public void setUser(UserEntity user) {
 		this.user = user;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((team == null) ? 0 : team.hashCode());
+		result = prime * result + ((user == null) ? 0 : user.hashCode());
+		result = prime * result + validity;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MemberEntity other = (MemberEntity) obj;
+		if (team == null) {
+			if (other.team != null)
+				return false;
+		} else if (!team.equals(other.team))
+			return false;
+		if (user == null) {
+			if (other.user != null)
+				return false;
+		} else if (!user.equals(other.user))
+			return false;
+		if (validity != other.validity)
+			return false;
+		return true;
 	}
 
 }

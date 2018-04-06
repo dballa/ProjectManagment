@@ -1,5 +1,6 @@
 package com.ikubinfo.internship.project.managedbean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,12 @@ import com.ikubinfo.internship.project.service.UserService;
 
 @ManagedBean
 @ViewScoped
-public class EditTeamBean {
+public class EditTeamBean implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private Team toEdit;
 	private List<User> userPm = new ArrayList<User>();
 	private List<User> userTl = new ArrayList<User>();
@@ -30,8 +36,8 @@ public class EditTeamBean {
 	private User projectManager;
 	private User businessAnalyst;
 	private User teamLeader;
-	private Member member=new Member();
-	private MemberPK memberPk=new MemberPK();
+	private Member member = new Member();
+	private MemberPK memberPk = new MemberPK();
 
 	@ManagedProperty(value = "#{userService}")
 	private UserService userService;
@@ -62,14 +68,12 @@ public class EditTeamBean {
 		}
 
 	}
-	
-	
-	
+
 	public void editTeam() {
+
+		teamService.editTeam(projectManager, toEdit, member, memberPk);
 		
-		teamService.editTeam(projectManager, toEdit, member,memberPk);
-	
-	
+
 	}
 
 	public Team getToEdit() {
@@ -176,25 +180,17 @@ public class EditTeamBean {
 		this.teamLeader = teamLeader;
 	}
 
-
-
 	public Member getMember() {
 		return member;
 	}
-
-
 
 	public void setMember(Member member) {
 		this.member = member;
 	}
 
-
-
 	public MemberPK getMemberPk() {
 		return memberPk;
 	}
-
-
 
 	public void setMemberPk(MemberPK memberPk) {
 		this.memberPk = memberPk;

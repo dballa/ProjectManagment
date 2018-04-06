@@ -16,6 +16,7 @@ import javax.faces.context.FacesContext;
 import com.ikubinfo.internship.project.pojo.Team;
 import com.ikubinfo.internship.project.pojo.User;
 import com.ikubinfo.internship.project.service.TeamService;
+import com.ikubinfo.internship.project.utils.RedirectUtils;
 
 @ManagedBean
 @ViewScoped
@@ -26,7 +27,7 @@ public class TeamBean {
 	private Team teamInfo;
 	private List<User> teamMembers = new ArrayList<User>();
 	private int toEditId;
-
+	private static String TEAM="/ProjectManager/EditTeam.xhtml?id=";
 	@ManagedProperty(value = "#{projectManager}")
 	private ProjectManagerBean projectManagerBean;
 	@ManagedProperty(value = "#{teamService}")
@@ -71,10 +72,8 @@ public class TeamBean {
 	}
 
 	public void redirectToEdit() throws IOException {
-
-		FacesContext fContext = FacesContext.getCurrentInstance();
-		ExternalContext extContext = fContext.getExternalContext();
-		extContext.redirect(extContext.getRequestContextPath() + "/ProjectManager/EditTeam.xhtml?id=" + toEditId);
+		RedirectUtils.redirectTo(TEAM+toEditId);
+		
 	}
 
 	public Team getTeam() {

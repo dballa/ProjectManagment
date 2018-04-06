@@ -15,12 +15,13 @@ import com.ikubinfo.internship.project.pojo.Requirment;
 import com.ikubinfo.internship.project.pojo.Status;
 import com.ikubinfo.internship.project.service.ProjectService;
 import com.ikubinfo.internship.project.service.StatusService;
+import com.ikubinfo.internship.project.utils.RedirectUtils;
 
 @ManagedBean
 public class BusinessAnalystBean {
 
 	private List<Project> projects = new ArrayList<Project>();
-	
+	private static String REDIRECT_TO_REQUIREMENT="/BusinessAnalyst/ProjectRequirements.xhtml?id=";
 	private List<Requirment> requirments = new ArrayList<Requirment>();
 	private Requirment requirment;
 	private Project project;
@@ -40,9 +41,8 @@ public class BusinessAnalystBean {
 
 	public void redirectToRequirement() throws IOException {
 
-		FacesContext fContext = FacesContext.getCurrentInstance();
-		ExternalContext extContext = fContext.getExternalContext();
-		extContext.redirect(extContext.getRequestContextPath() + "/BusinessAnalyst/ProjectRequirements.xhtml?id=" + projectId);
+		RedirectUtils.redirectTo( REDIRECT_TO_REQUIREMENT + projectId);
+		
 
 	}
 

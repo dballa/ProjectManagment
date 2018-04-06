@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ikubinfo.internship.project.dao.TaskDao;
 import com.ikubinfo.internship.project.pojo.Requirment;
+import com.ikubinfo.internship.project.pojo.SearchTask;
 import com.ikubinfo.internship.project.pojo.Task;
 
 @Service
@@ -38,5 +39,9 @@ public class TaskService {
 	public List<Task> getTasksOfDeveloper(int idProject,int idUser){
 		
 	return taskDao.getTasksOfDeveloper(idProject, idUser);
+	}
+
+	public List<Task> searchTask(SearchTask filter,int idUser, int idProject){
+		return taskDao.searchTask(filter, idProject, idUser);
 	}
 }

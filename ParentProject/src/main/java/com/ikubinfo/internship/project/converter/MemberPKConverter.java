@@ -9,8 +9,7 @@ public class MemberPKConverter implements ConverterInterface<MemberPK, MemberPKE
 	@Override
 	public MemberPKEntity fromPojoToEntity(MemberPK pojo) {
 		MemberPKEntity entity = new MemberPKEntity();
-		entity.setIdTeam(pojo.getIdTeam());
-		entity.setMember(pojo.getMember());
+
 
 		return entity;
 	}
@@ -18,8 +17,7 @@ public class MemberPKConverter implements ConverterInterface<MemberPK, MemberPKE
 	@Override
 	public MemberPK fromEntityToPojo(MemberPKEntity entity) {
 		MemberPK pojo = new MemberPK();
-		pojo.setIdTeam(entity.getIdTeam());
-		pojo.setMember(entity.getMember());
+
 
 		return pojo;
 	}

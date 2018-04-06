@@ -10,6 +10,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import com.ikubinfo.internship.project.pojo.SearchTask;
 import com.ikubinfo.internship.project.pojo.Status;
 import com.ikubinfo.internship.project.pojo.Task;
 import com.ikubinfo.internship.project.service.TaskService;
@@ -22,6 +23,7 @@ public class DeveloperTasksBean {
 	private int idProject;
 	private int idUser;
 	private Task selectedTask;
+	private SearchTask filter;
 
 	@ManagedProperty(value = "#{taskService}")
 	private TaskService taskService;
@@ -33,9 +35,9 @@ public class DeveloperTasksBean {
 		idUser = (int) context.getExternalContext().getSessionMap().get("userId");
 		String id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
 		idProject = Integer.parseInt(id);
-		tasks = taskService.getTasksOfDeveloper(idProject, idUser);
+		filter=new SearchTask();
 	
-
+		tasks=taskService.searchTask(filter, idUser, idProject);
 	}
 	
 	public void editTask() {
@@ -45,7 +47,13 @@ public class DeveloperTasksBean {
 		context.addMessage(null, new FacesMessage("Success Task"+selectedTask.getNameTask()+"  Edited"));
 	}
 
+	public void searchTask(){
 	
+	tasks=taskService.searchTask(filter, idUser, idProject);
+		
+		
+		
+	}
 
 	public int getIdProject() {
 		return idProject;
@@ -85,6 +93,14 @@ public class DeveloperTasksBean {
 
 	public void setSelectedTask(Task selectedTask) {
 		this.selectedTask = selectedTask;
+	}
+
+	public SearchTask getFilter() {
+		return filter;
+	}
+
+	public void setFilter(SearchTask filter) {
+		this.filter = filter;
 	}
 
 
