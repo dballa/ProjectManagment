@@ -3,22 +3,12 @@ package com.ikubinfo.internship.project.pojo;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import com.ikubinfo.internship.project.entity.RequirmentEntity;
-import com.ikubinfo.internship.project.entity.StatusEntity;
-import com.ikubinfo.internship.project.entity.TeamEntity;
-
 public class Project {
 	private int idProject;
 
 	private String client;
 
-	private int createdBy;
+	private User createdBy;
 
 	private String description;
 
@@ -39,7 +29,9 @@ public class Project {
 	private Status status;
 
 	private boolean disabled;
+	private boolean checkEndDate;
 
+	
 
 	public boolean isDisabled() {
 		return "Waiting BA".equals(status.getNameStatus());
@@ -70,13 +62,7 @@ public class Project {
 		this.client = client;
 	}
 
-	public int getCreatedBy() {
-		return this.createdBy;
-	}
 
-	public void setCreatedBy(int createdBy) {
-		this.createdBy = createdBy;
-	}
 
 	public String getDescription() {
 		return this.description;
@@ -156,11 +142,29 @@ public class Project {
 		return requirment;
 	}
 
+	public User getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(User createdBy) {
+		this.createdBy = createdBy;
+	}
+
 	@Override
 	public String toString() {
 		return "Project [idProject=" + idProject + ", client=" + client+ ", createdBy=" + createdBy
 				+ ", description=" + description + ", endDate=" + endDate + ", nameProject=" + nameProject
 				+ ", startDate=" + startDate + ", validity=" + validity + ", team=" + team + ", status=" + status
 				+ ", requirments=" + requirments + "]";
+	}
+
+	public boolean isCheckEndDate() {
+	Date todayDate=new Date();
+	System.out.println(todayDate);
+		return todayDate.after(endDate);
+	}
+
+	public void setCheckEndDate(boolean checkEndDate) {
+		this.checkEndDate = checkEndDate;
 	}
 }

@@ -10,6 +10,7 @@ import javax.faces.context.FacesContext;
 
 import com.ikubinfo.internship.project.pojo.Permission;
 import com.ikubinfo.internship.project.pojo.Project;
+import com.ikubinfo.internship.project.pojo.User;
 
 @ManagedBean
 @SessionScoped
@@ -18,13 +19,14 @@ public class UserSessionBean {
 	private List<Permission> userPermission = new ArrayList<Permission>();
 	private Project currentProject;
 	private int userId;
+	private User user;
 	@PostConstruct
 	public void init() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		userName = (String) context.getExternalContext().getSessionMap().get("userName");
 		userPermission = (List<Permission>) context.getExternalContext().getSessionMap().get("userPermissions");
 		userId=(int) context.getExternalContext().getSessionMap().get("userId");
-		System.out.println(userId);
+		user=(User) context.getExternalContext().getSessionMap().get("user");
 		
 	}
 
@@ -58,5 +60,13 @@ public class UserSessionBean {
 
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 }

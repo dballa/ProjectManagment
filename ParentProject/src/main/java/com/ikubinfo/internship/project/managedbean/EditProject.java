@@ -30,6 +30,7 @@ public class EditProject {
 	private List<Team> teams = new ArrayList<Team>();
 	private List<Status> status = new ArrayList<Status>();
 	private String id;
+	int toEditId;
 
 	@ManagedProperty(value = "#{projectService}")
 	private ProjectService projectService;
@@ -45,35 +46,29 @@ public class EditProject {
 
 	}
 
-	public void getProject() throws IOException {
-		if (isNullOrEmpty()) {
+	public void allowedProject() throws IOException {
 
-			RedirectUtils.redirectTo(NOT_FOUND);
-
-		}
-
-		else {
-
-			int toEditId = Integer.parseInt(id);
-
-			System.out.println(userSessionBean.getUserId());
-
-			if (projectService.accessProject(userSessionBean.getUserId(), toEditId)) {
+		try {
+			toEditId = Integer.parseInt(id);
+			if (isAllowedToContinue(toEditId)) {
 				toEdit = projectService.getProjectById(toEditId);
 			} else {
-
 				RedirectUtils.redirectTo(NOT_FOUND);
-
 			}
 
+		} catch (Exception ex) {
+			RedirectUtils.redirectTo(NOT_FOUND);
 		}
 
 	}
 
-	private boolean isNullOrEmpty() {
-		return (id == null || id.trim().isEmpty());
+	private boolean isAllowedToContinue(int id) {
+		return projectService.accessProject(userSessionBean.getUserId(), id)
+				&& !projectService.getProjectById(id).getStatus().getNameStatus().equals("Waiting BA");
 
 	}
+
+	
 
 	public void editProject() throws IOException {
 		if (toEdit.getEndDate().after(toEdit.getStartDate())) {
@@ -148,6 +143,14 @@ public class EditProject {
 
 	public void setUserSessionBean(UserSessionBean userSessionBean) {
 		this.userSessionBean = userSessionBean;
+	}
+
+	public int getToEditId() {
+		return toEditId;
+	}
+
+	public void setToEditId(int toEditId) {
+		this.toEditId = toEditId;
 	}
 
 }

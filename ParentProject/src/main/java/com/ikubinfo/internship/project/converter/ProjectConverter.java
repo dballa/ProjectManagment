@@ -11,12 +11,12 @@ import com.ikubinfo.internship.project.utils.ConverterInterface;
 public class ProjectConverter implements ConverterInterface<Project, ProjectEntity> {
 	private StatusConverter STATUS_CONVERTER = new StatusConverter();
 	private TeamConverter TEAM_CONVERTER = new TeamConverter();
-
+	private UserConverter USER_CONVERTER=new UserConverter();
 	@Override
 	public ProjectEntity fromPojoToEntity(Project pojo) {
 		ProjectEntity entity = new ProjectEntity();
 		entity.setClient(pojo.getClient());
-		entity.setCreatedBy(pojo.getCreatedBy());
+		entity.setCreatedBy(USER_CONVERTER.fromPojoToEntity(pojo.getCreatedBy()));
 		entity.setDescription(pojo.getDescription());
 		entity.setEndDate(pojo.getEndDate());
 		entity.setIdProject(pojo.getIdProject());
@@ -34,7 +34,7 @@ public class ProjectConverter implements ConverterInterface<Project, ProjectEnti
 		Project pojo = new Project();
 
 		pojo.setClient(entity.getClient());
-		pojo.setCreatedBy(entity.getCreatedBy());
+		pojo.setCreatedBy(USER_CONVERTER.fromEntityToPojo(entity.getCreatedBy()));
 		pojo.setDescription(entity.getDescription());
 		pojo.setEndDate(entity.getEndDate());
 		pojo.setIdProject(entity.getIdProject());

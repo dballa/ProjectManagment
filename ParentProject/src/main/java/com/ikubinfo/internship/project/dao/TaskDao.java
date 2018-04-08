@@ -94,7 +94,7 @@ public class TaskDao {
 
 		}
 
-		Query query = session.createQuery(queryString, TaskEntity.class);
+		Query<TaskEntity> query = session.createQuery(queryString, TaskEntity.class);
 
 		query.setParameter(1, idProject);
 		query.setParameter(2, idUser);
@@ -110,6 +110,7 @@ public class TaskDao {
 		}
 
 		List<TaskEntity> listOfEntity = query.getResultList();
+		
 		List<Task> toReturn = new ArrayList<Task>();
 		for (TaskEntity task : listOfEntity) {
 

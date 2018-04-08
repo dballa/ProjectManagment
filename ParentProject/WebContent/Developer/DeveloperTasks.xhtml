@@ -7,6 +7,10 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:o="http://omnifaces.org/ui"
 	xmlns:of="http://omnifaces.org/functions">
+<f:metadata>
+	<f:viewParam name="id" value="#{developerTasksBean.id}" />
+	<f:viewAction action="#{developerTasksBean.getTask}" />
+</f:metadata>
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -66,16 +70,20 @@ html, body, h1, h2, h3, h4, h5, h6 {
 	<div class="w3-main" style="margin-left: 250px">
 
 		<div class="w3-row w3-padding-64">
-	
+
 			<h:form id="form">
 				<div class="w3-twothird w3-container" style="width: 85%">
-		<h:panelGrid columns="5">
-		<h:outputLabel for="TaskName" value="Name:"/>
-		<p:inputText id="TaskName" value="#{developerTasksBean.filter.name}"/>
-		<h:outputLabel for="TaskDsc" value="Description:" />
-		<p:inputText id="TaskDsc" value="#{developerTasksBean.filter.description}"/>
-		<p:commandButton value="Search" actionListener="#{developerTasksBean.searchTask}"  update="tasks" ajax="true" />
-</h:panelGrid>
+					<h:panelGrid columns="5">
+						<h:outputLabel for="TaskName" value="Name:" />
+						<p:inputText id="TaskName"
+							value="#{developerTasksBean.filter.name}" />
+						<h:outputLabel for="TaskDsc" value="Description:" />
+						<p:inputText id="TaskDsc"
+							value="#{developerTasksBean.filter.description}" />
+						<p:commandButton value="Search"
+							actionListener="#{developerTasksBean.searchTask}" update="tasks"
+							ajax="true" />
+					</h:panelGrid>
 					<p:dataGrid var="task" value="#{developerTasksBean.tasks}"
 						columns="3" layout="grid" rows="12" paginator="true" id="tasks"
 						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -103,7 +111,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 
 					</p:dataGrid>
 
-					<p:dialog header="Task Info" widgetVar="taskDialog" modal="true"
+					<p:dialog header="Task Info" widgetVar="taskDialog"
 						showEffect="fade" hideEffect="fade" resizable="false">
 						<p:outputPanel id="taskDetail" style="text-align:center;">
 							<p:panelGrid columns="2"

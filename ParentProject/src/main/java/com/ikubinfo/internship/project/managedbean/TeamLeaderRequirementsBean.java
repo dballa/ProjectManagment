@@ -15,39 +15,60 @@ import com.ikubinfo.internship.project.pojo.Project;
 import com.ikubinfo.internship.project.pojo.Requirment;
 import com.ikubinfo.internship.project.service.ProjectService;
 import com.ikubinfo.internship.project.service.RequirmentService;
+import com.ikubinfo.internship.project.utils.RedirectUtils;
+
 /*
  * ishte tlReqBean
  */
-@ManagedBean(name="tlReqBean")
+@ManagedBean(name = "tlReqBean")
 @ViewScoped
 public class TeamLeaderRequirementsBean {
 	private List<Requirment> requirments = new ArrayList<Requirment>();
 	private int idProject;
 	private Project project;
 	private int requirmentId;
+	private String id;
+	private static final String NOT_FOUND = "/PageNotFound.xhtml";
+
 	@ManagedProperty(value = "#{requirmentService}")
 	private RequirmentService requirmentService;
 	@ManagedProperty(value = "#{projectService}")
 	private ProjectService projectService;
-	
-	@ManagedProperty(value="#{userSessionBean}")
+
+	@ManagedProperty(value = "#{userSessionBean}")
 	private UserSessionBean userSessionBean;
 
 	@PostConstruct
 	public void init() {
 
-		String id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
-		System.out.println(id);
-		idProject = Integer.parseInt(id);
+	}
 
-		System.out.println(idProject);
-		requirments = requirmentService.getProjectRequirements(idProject);
-		project = projectService.getProjectById(idProject);
+	public void getProjects() throws IOException {
+
+		try {
+			idProject = Integer.parseInt(id);
+			if (isAllowedToContinue(idProject)) {
+
+				requirments = requirmentService.getProjectRequirements(idProject);
+				project = projectService.getProjectById(idProject);
+			} else {
+				RedirectUtils.redirectTo(NOT_FOUND);
+			}
+
+		} catch (Exception ex) {
+			RedirectUtils.redirectTo(NOT_FOUND);
+		}
+
+	}
+
+	private boolean isAllowedToContinue(int id) {
+		return projectService.accessProject(userSessionBean.getUserId(), id)
+				&& !projectService.getProjectById(id).getStatus().getNameStatus().equals("Waiting BA");
 	}
 
 	public String redirectToTaskCreate() throws IOException {
 		userSessionBean.setCurrentProject(project);
-		System.out.println("requirmentId: " + requirmentId);
+
 		return "/TeamLeader/TlCreateTasks.xhtml?faces-redirect=true&idreq=" + requirmentId;
 	}
 
@@ -105,6 +126,14 @@ public class TeamLeaderRequirementsBean {
 
 	public void setUserSessionBean(UserSessionBean userSessionBean) {
 		this.userSessionBean = userSessionBean;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 }

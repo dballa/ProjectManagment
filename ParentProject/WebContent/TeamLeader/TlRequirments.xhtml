@@ -7,6 +7,10 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:o="http://omnifaces.org/ui"
 	xmlns:of="http://omnifaces.org/functions">
+	<f:metadata>
+	<f:viewParam name="id" value="#{tlReqBean.id}" />
+	<f:viewAction action="#{tlReqBean.getProjects}"/>
+</f:metadata>
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -80,7 +84,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 						<p:dataTable id="reqTable" value="#{tlReqBean.requirments}"
 							var="req" rowKey="#{req.idRequirment}">
 							<f:facet name="header">
-								Requirments
+								Requirments of <h:outputText value="#{tlReqBean.project.nameProject}"/>
 								 </f:facet>
 							<p:column headerText="Name">
 								<h:outputText value="#{req.nameRequirment}" />

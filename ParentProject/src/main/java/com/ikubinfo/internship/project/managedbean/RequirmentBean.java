@@ -34,11 +34,14 @@ public class RequirmentBean {
 	private int idProject;
 	private Requirment requirment;
 	private Project project = new Project();
-	private static final String BUSINESS_ANALYST=  "/BusinessAnalyst/BusinessAnalyst.xhtml";
+	private static final String BUSINESS_ANALYST = "/BusinessAnalyst/BusinessAnalyst.xhtml";
+	private static final String NOT_FOUND = "/PageNotFound.xhtml";
 	private Requirment showTasks;
-	private List<Task> requirmentTasks=new ArrayList<Task>();
+	private List<Task> requirmentTasks = new ArrayList<Task>();
 	private Requirment toDelete;
-	private Requirment toEdit=new Requirment();
+	private Requirment toEdit = new Requirment();
+	private String id;
+
 	@ManagedProperty(value = "#{requirmentService}")
 	private RequirmentService requirmentService;
 	@ManagedProperty(value = "#{statusService}")
@@ -49,25 +52,46 @@ public class RequirmentBean {
 	private ProjectService projectService;
 	@ManagedProperty(value = "#{taskService}")
 	private TaskService taskService;
+	@ManagedProperty(value = "#{userSessionBean}")
+	private UserSessionBean userSessionBean;
 
 	@PostConstruct
 	public void init() {
-		String id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
-		idProject = Integer.parseInt(id);
-		requirements = requirmentService.getProjectRequirements(idProject);
+
 		status = statusService.allStatus();
 		priority = priorityService.allPriority();
-		project = projectService.getProjectById(idProject);
+
 		requirment = new Requirment();
-		showTasks=new Requirment();
-	
-		toDelete=new Requirment();
-		
+		showTasks = new Requirment();
+
+		toDelete = new Requirment();
+
 	}
 
-	
-	
-	
+	public void getProjects() throws IOException {
+
+		try {
+			idProject = Integer.parseInt(id);
+			if (isAllowedToContinue(idProject)) {
+
+				requirements = requirmentService.getProjectRequirements(idProject);
+				project = projectService.getProjectById(idProject);
+			} else {
+				RedirectUtils.redirectTo(NOT_FOUND);
+			}
+
+		} catch (Exception ex) {
+			RedirectUtils.redirectTo(NOT_FOUND);
+		}
+
+	}
+
+	private boolean isAllowedToContinue(int id) {
+		return projectService.accessProject(userSessionBean.getUserId(), id)
+				&& projectService.getProjectById(id).getStatus().getNameStatus().equals("Waiting BA");
+
+	}
+
 	public void addRequirment() {
 		requirment.setValidity((byte) 1);
 		requirment.setProject(project);
@@ -75,54 +99,55 @@ public class RequirmentBean {
 		requirements = requirmentService.getProjectRequirements(idProject);
 		FacesContext context = FacesContext.getCurrentInstance();
 
-		context.addMessage(null, new FacesMessage("Success Requirement" + requirment.getNameRequirment() +"Added" ));
+		context.addMessage(null, new FacesMessage("Success Requirement" + requirment.getNameRequirment() + "Added"));
 	}
-	public void getListRequirmentTasks(){
+
+	public void getListRequirmentTasks() {
 		System.out.println(showTasks.getIdRequirment());
-		requirmentTasks=new ArrayList<Task>();
-		requirmentTasks= taskService.requirmentTasks(showTasks.getIdRequirment());	
+		requirmentTasks = new ArrayList<Task>();
+		requirmentTasks = taskService.requirmentTasks(showTasks.getIdRequirment());
 		System.out.println(requirmentTasks);
-		
+
 	}
 
 	public void changeProjectStatus() throws IOException {
-		
+
 		projectService.editProject(project);
 		RedirectUtils.redirectTo(BUSINESS_ANALYST);
-		
+
 	}
-	
+
 	public void removeRequirment() {
 		System.out.println(toDelete);
-		if(toDelete.getStatus().getNameStatus().equals("Done")) {
-			
+		if (toDelete.getStatus().getNameStatus().equals("Done")) {
+
 			toDelete.setValidity((byte) 0);
 			requirmentService.removeRequirment(toDelete);
 			requirements = requirmentService.getProjectRequirements(idProject);
-			
+
 			FacesContext context = FacesContext.getCurrentInstance();
 
-			context.addMessage(null, new FacesMessage("Success Requirement " +toDelete.getNameRequirment()+"  Deleted"));
-		}
-		else {
-			
+			context.addMessage(null,
+					new FacesMessage("Success Requirement " + toDelete.getNameRequirment() + "  Deleted"));
+		} else {
+
 			FacesContext context = FacesContext.getCurrentInstance();
 
 			context.addMessage(null, new FacesMessage("!! Set Status as Done to delete Requirement"));
 		}
 	}
-	
+
 	public void editRequirment() {
-		
+
 		toEdit.setValidity((byte) 1);
 		toEdit.setProject(project);
 		requirmentService.editRequirment(toEdit);
 		requirements = requirmentService.getProjectRequirements(idProject);
 		FacesContext context = FacesContext.getCurrentInstance();
 
-		context.addMessage(null, new FacesMessage("Success Requirment"+toEdit.getNameRequirment() +"Edited"));
+		context.addMessage(null, new FacesMessage("Success Requirment" + toEdit.getNameRequirment() + "Edited"));
 	}
-	
+
 	public List<Requirment> getRequrements() {
 		return requirements;
 	}
@@ -199,6 +224,14 @@ public class RequirmentBean {
 		return priorityService;
 	}
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public void setPriorityService(PriorityService priorityService) {
 		this.priorityService = priorityService;
 	}
@@ -210,9 +243,6 @@ public class RequirmentBean {
 	public void setProjectService(ProjectService projectService) {
 		this.projectService = projectService;
 	}
-
-
-
 
 	public TaskService getTaskService() {
 		return taskService;
@@ -230,7 +260,6 @@ public class RequirmentBean {
 		this.showTasks = showTasks;
 	}
 
-	
 	public List<Task> getRequirmentTasks() {
 		return requirmentTasks;
 	}
@@ -238,9 +267,6 @@ public class RequirmentBean {
 	public void setRequirmentTasks(List<Task> requirmentTasks) {
 		this.requirmentTasks = requirmentTasks;
 	}
-
-	
-
 
 	public Requirment getToDelete() {
 		return toDelete;
@@ -258,5 +284,12 @@ public class RequirmentBean {
 		this.toEdit = toEdit;
 	}
 
-	
+	public UserSessionBean getUserSessionBean() {
+		return userSessionBean;
+	}
+
+	public void setUserSessionBean(UserSessionBean userSessionBean) {
+		this.userSessionBean = userSessionBean;
+	}
+
 }

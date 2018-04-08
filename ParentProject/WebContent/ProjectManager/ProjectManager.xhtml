@@ -30,6 +30,9 @@ html, body, h1, h2, h3, h4, h5, h6 {
 	bottom: 0;
 	height: inherit;
 }
+.red{
+color: red;
+}
 </style>
 	<title>Project Manager</title>
 </h:head>
@@ -84,7 +87,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 
 
 					<p:dataTable id="projectTable" var="project"
-						value="#{projectManagerBean.projects }"  >
+						value="#{projectManagerBean.projects }"   rowStyleClass="#{project.checkEndDate?'red':''}">
 						<f:facet name="header">
 								Projects
 								 </f:facet>
@@ -96,6 +99,10 @@ html, body, h1, h2, h3, h4, h5, h6 {
 						</p:column>
 						<p:column headerText="Client">
 							<h:outputText value="#{project.client}" />
+						</p:column>
+						
+						<p:column headerText="CreatedBy">
+							<h:outputText value="#{project.createdBy.nameUser}" />
 						</p:column>
 
 						<p:column headerText="Start Date">
@@ -123,7 +130,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 
 							<p:commandButton icon="ui-icon-wrench" id="editButton"
 								title="Edit" action="#{projectManagerBean.redirectToProject}"
-								process="@form" ajax="true"  disabled="#{project.disabled}">
+								process="@form" ajax="true"  disabled="#{project.disabled}" >
 								<f:setPropertyActionListener value="#{project.idProject}"
 									target="#{projectManagerBean.toEditId}"></f:setPropertyActionListener>
 							</p:commandButton>

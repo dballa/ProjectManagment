@@ -126,7 +126,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 	</h:form>
 
 
-	<p:dialog header="New Team" widgetVar="dlg2" minHeight="40" modal="true" closable="false">
+	<p:dialog header="New Team" widgetVar="dlg2" minHeight="40" closable="false">
 		<h:form>
 			<p:panelGrid columns="2" style="float:center">
 				<p:panel id="panel">
@@ -147,7 +147,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 
 
 
-	<p:dialog header="Team Info" widgetVar="dlg1" modal="true" width="300"
+	<p:dialog header="Team Info" widgetVar="dlg1"  width="300"
 		height="300">
 		<h:form id="memberDialogForm">
 			<p:dataList value="#{teamBean.teamMembers}" var="member"

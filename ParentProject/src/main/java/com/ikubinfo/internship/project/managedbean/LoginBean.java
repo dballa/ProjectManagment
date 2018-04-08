@@ -45,6 +45,7 @@ public class LoginBean {
 		}
 
 		else {
+			context.getExternalContext().getSessionMap().put("user", user);
 			context.getExternalContext().getSessionMap().put("userId", user.getIdUser());
 			context.getExternalContext().getSessionMap().put("userName", user.getNameUser());
 			context.getExternalContext().getSessionMap().put("userRole", user.getRole().getNameRole());

@@ -1,5 +1,6 @@
 package com.ikubinfo.internship.project.managedbean;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,9 @@ import javax.faces.context.FacesContext;
 import com.ikubinfo.internship.project.pojo.SearchTask;
 import com.ikubinfo.internship.project.pojo.Status;
 import com.ikubinfo.internship.project.pojo.Task;
+import com.ikubinfo.internship.project.service.ProjectService;
 import com.ikubinfo.internship.project.service.TaskService;
+import com.ikubinfo.internship.project.utils.RedirectUtils;
 
 @ManagedBean
 @ViewScoped
@@ -24,21 +27,49 @@ public class DeveloperTasksBean {
 	private int idUser;
 	private Task selectedTask;
 	private SearchTask filter;
+	private String id;
+	private static final String NOT_FOUND = "/PageNotFound.xhtml";
 
 	@ManagedProperty(value = "#{taskService}")
 	private TaskService taskService;
+	@ManagedProperty(value = "#{userSessionBean}")
+	private UserSessionBean userSessionBean;
+	@ManagedProperty(value = "#{projectService}")
+	private ProjectService projectService;
 	
 
 	@PostConstruct
 	public void init() {
-		FacesContext context = FacesContext.getCurrentInstance();
-		idUser = (int) context.getExternalContext().getSessionMap().get("userId");
-		String id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
-		idProject = Integer.parseInt(id);
-		filter=new SearchTask();
-	
-		tasks=taskService.searchTask(filter, idUser, idProject);
+		
 	}
+	
+	public void getTask() throws IOException {
+
+		try {
+			idProject = Integer.parseInt(id);
+			if (isAllowedToContinue(idProject)) {
+
+				filter=new SearchTask();
+				
+				tasks=taskService.searchTask(filter, userSessionBean.getUserId(), idProject);
+			} else {
+				RedirectUtils.redirectTo(NOT_FOUND);
+			}
+
+		} catch (Exception ex) {
+			RedirectUtils.redirectTo(NOT_FOUND);
+		}
+
+	}
+
+	
+	
+	
+	private boolean isAllowedToContinue(int id) {
+		return projectService.accessProject(userSessionBean.getUserId(), id)
+				&& !projectService.getProjectById(id).getStatus().getNameStatus().equals("Waiting BA");
+	}
+
 	
 	public void editTask() {
 		taskService.editTask(selectedTask);
@@ -49,7 +80,7 @@ public class DeveloperTasksBean {
 
 	public void searchTask(){
 	
-	tasks=taskService.searchTask(filter, idUser, idProject);
+	tasks=taskService.searchTask(filter, userSessionBean.getUserId(), idProject);
 		
 		
 		
@@ -101,6 +132,30 @@ public class DeveloperTasksBean {
 
 	public void setFilter(SearchTask filter) {
 		this.filter = filter;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public UserSessionBean getUserSessionBean() {
+		return userSessionBean;
+	}
+
+	public ProjectService getProjectService() {
+		return projectService;
+	}
+
+	public void setUserSessionBean(UserSessionBean userSessionBean) {
+		this.userSessionBean = userSessionBean;
+	}
+
+	public void setProjectService(ProjectService projectService) {
+		this.projectService = projectService;
 	}
 
 

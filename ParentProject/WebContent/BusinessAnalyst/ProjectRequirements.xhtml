@@ -7,6 +7,10 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:o="http://omnifaces.org/ui"
 	xmlns:of="http://omnifaces.org/functions">
+	<f:metadata>
+	<f:viewParam name="id" value="#{requirmentBean.id}" />
+	<f:viewAction action="#{requirmentBean.getProjects}"/>
+</f:metadata>
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -174,7 +178,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 
 	<h:form id="formEdit">
 		<p:dialog header="Requirement" closable="false" widgetVar="dlgEdit"
-			minHeight="40" modal="true" autoUpdate="true" id="editDialog">
+			minHeight="40"  autoUpdate="true" id="editDialog">
 			<p:panel id="panelEdit">
 				<p:panelGrid columns="2">
 
@@ -238,7 +242,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 
 	<h:form id="createDialog">
 		<p:dialog header="Requirement" closable="false" widgetVar="dlg1"
-			minHeight="40" modal="true">
+			minHeight="40" >
 			<p:panel id="panel">
 				<p:panelGrid columns="2">
 
@@ -291,7 +295,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 
 	</h:form>
 
-	<p:dialog header="Tasks" widgetVar="dlg2" modal="true" width="400"
+	<p:dialog header="Tasks" widgetVar="dlg2"  width="400"
 		height="400">
 		<h:form id="tasksInfo">
 			<p:dataList value="#{requirmentBean.requirmentTasks}" var="task"

@@ -25,10 +25,11 @@ public class ProjectDao {
 	private ProjectConverter PROJECT_CONVERTER = new ProjectConverter();
 
 	public List<Project> allProjects(int id) {
-
-		Query<ProjectEntity> query = sessionFactory.getCurrentSession()
-				.createQuery("from ProjectEntity where validity=1 and createdBy=?1", ProjectEntity.class);
+		Session session=sessionFactory.getCurrentSession();
+		Query<ProjectEntity> query = session
+				.createQuery("select proj from ProjectEntity  proj  join proj.team.members  mem where mem.user.idUser=?1 and proj.validity=1 ", ProjectEntity.class);
 		query.setParameter(1, id);
+		
 		List<ProjectEntity> projects = query.list();
 
 		List<Project> projectsPojo = new ArrayList<Project>();
@@ -106,6 +107,9 @@ public class ProjectDao {
 
 	}
 
+
+
+	
 	public boolean accessProject(int idUser, int idProject) {
 		Session session = sessionFactory.getCurrentSession();
 		Query<ProjectEntity> query = session.createQuery
@@ -115,12 +119,12 @@ public class ProjectDao {
 		query.setParameter(1, idUser);
 		query.setParameter(2, idProject);
 		try {
-			ProjectEntity projectFound = query.getSingleResult();
+			 query.getSingleResult();
+			 return true;
 		} catch (NoResultException e) {
 			return false;
 		}
 
-		return true;
-	}
 
+	}
 }

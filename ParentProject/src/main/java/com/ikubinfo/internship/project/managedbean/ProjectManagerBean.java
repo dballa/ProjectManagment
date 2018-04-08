@@ -37,7 +37,8 @@ public class ProjectManagerBean {
 	private ProjectService projectService;
 	@ManagedProperty(value = "#{teamService}")
 	private TeamService teamService;
-
+	@ManagedProperty(value="#{userSessionBean}")
+	private UserSessionBean userSessionBean;
 	@PostConstruct
 	public void init() {
 
@@ -65,7 +66,7 @@ public class ProjectManagerBean {
 
 	public void addProject() {
 		if (project.getEndDate().after(project.getStartDate())) {
-			project.setCreatedBy(createdBy);
+			project.setCreatedBy(userSessionBean.getUser());
 			project.setValidity((byte) 1);
 			projectService.addProject(project);
 			projects = projectService.allProjects(createdBy);
@@ -171,6 +172,14 @@ public class ProjectManagerBean {
 
 	public void setCreatedBy(int createdBy) {
 		this.createdBy = createdBy;
+	}
+
+	public UserSessionBean getUserSessionBean() {
+		return userSessionBean;
+	}
+
+	public void setUserSessionBean(UserSessionBean userSessionBean) {
+		this.userSessionBean = userSessionBean;
 	}
 
 }

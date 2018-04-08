@@ -1,9 +1,23 @@
 package com.ikubinfo.internship.project.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+
 
 
 /**
@@ -22,8 +36,9 @@ public class ProjectEntity implements Serializable {
 	private int idProject;
 
 	private String client;
-
-	private int createdBy;
+	@OneToOne
+	@JoinColumn(name="CreatedBy")
+	private UserEntity createdBy;
 
 	private String description;
 
@@ -70,14 +85,7 @@ public class ProjectEntity implements Serializable {
 		this.client = client;
 	}
 
-	public int getCreatedBy() {
-		return this.createdBy;
-	}
-
-	public void setCreatedBy(int createdBy) {
-		this.createdBy = createdBy;
-	}
-
+	
 	public String getDescription() {
 		return this.description;
 	}
@@ -156,6 +164,15 @@ public class ProjectEntity implements Serializable {
 		return requirment;
 	}
 
+	public UserEntity getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(UserEntity createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	
 
 
 }

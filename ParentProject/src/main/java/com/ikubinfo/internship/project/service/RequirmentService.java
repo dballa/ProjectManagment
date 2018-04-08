@@ -36,4 +36,7 @@ public class RequirmentService {
 		
 		requirmentDao.editRequirment(requirment);
 	}
+	public boolean accessRequirement(int idProject,int idUser) {
+		return requirmentDao.accessRequirement(idUser, idProject);
+	}
 }

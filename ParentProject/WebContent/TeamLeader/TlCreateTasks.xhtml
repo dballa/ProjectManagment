@@ -7,6 +7,10 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:o="http://omnifaces.org/ui"
 	xmlns:of="http://omnifaces.org/functions">
+	<f:metadata>
+	<f:viewParam name="idreq"  value="#{teamLeaderCreateTasksBean.idFromURL}" />
+	<f:viewAction action="#{teamLeaderCreateTasksBean.getRequirements}"/>
+</f:metadata>
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -138,7 +142,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 
 	<h:form id="dlgForm2">
 		<p:dialog header="Task  Info" closable="false" widgetVar="dlg2"
-			minHeight="40" modal="true" autoUpdate="true" id="editDialog">
+			minHeight="40"  autoUpdate="true" id="editDialog">
 
 
 			<p:panel id="panel2">
@@ -216,7 +220,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 
 
 	<p:dialog header="Task  Info" closable="false" widgetVar="dlg1"
-		minHeight="40" modal="true">
+		minHeight="40" >
 
 		<h:form id="dlgForm">
 			<p:panel id="panel">

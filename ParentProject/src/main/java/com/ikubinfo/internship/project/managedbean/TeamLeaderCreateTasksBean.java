@@ -1,5 +1,6 @@
 package com.ikubinfo.internship.project.managedbean;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -11,6 +12,7 @@ import javax.faces.context.FacesContext;
 
 import com.ikubinfo.internship.project.pojo.Project;
 import com.ikubinfo.internship.project.pojo.Requirment;
+import com.ikubinfo.internship.project.pojo.SearchTask;
 import com.ikubinfo.internship.project.pojo.Task;
 import com.ikubinfo.internship.project.pojo.Team;
 import com.ikubinfo.internship.project.pojo.User;
@@ -19,10 +21,12 @@ import com.ikubinfo.internship.project.service.RequirmentService;
 import com.ikubinfo.internship.project.service.StatusService;
 import com.ikubinfo.internship.project.service.TaskService;
 import com.ikubinfo.internship.project.service.UserService;
+import com.ikubinfo.internship.project.utils.RedirectUtils;
 
 @ManagedBean
 @ViewScoped
 public class TeamLeaderCreateTasksBean {
+	private static final String NOT_FOUND = "/PageNotFound.xhtml";
 	private int idRequirment;
 	private List<Task> tasks;
 	private Task task;
@@ -34,6 +38,7 @@ public class TeamLeaderCreateTasksBean {
 	private Task toDelete;
 	private Task toEdit = new Task();
 	private Requirment currentRequirement;
+	private String idFromURL;
 
 	@ManagedProperty(value = "#{requirmentService}")
 	private RequirmentService requirmentService;
@@ -47,18 +52,41 @@ public class TeamLeaderCreateTasksBean {
 
 	@PostConstruct
 	public void init() {
-		String id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("idreq");
-		idRequirment = Integer.parseInt(id);
-		userId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
-		System.out.println("lec" + idRequirment);
-		tasks = taskService.requirmentTasks(idRequirment);
+		// String id =
+		// FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("idreq");
+		// idRequirment = Integer.parseInt(id);
+
+		// tasks = taskService.requirmentTasks(idRequirment);
 		task = new Task();
 		project = userSessionBean.getCurrentProject();
 		team = project.getTeam();
 		developers = userService.getDevelopers(team);
 		requirments = requirmentService.getProjectRequirements(project.getIdProject());
-		currentRequirement = requirmentService.getRequirmentById(idRequirment);
+		
 		toDelete = new Task();
+
+	}
+
+	public void getRequirements() throws IOException {
+
+		try {
+			idRequirment = Integer.parseInt(idFromURL);
+			if (isAllowedToContinue()) {
+				tasks = taskService.requirmentTasks(idRequirment);
+				currentRequirement = requirmentService.getRequirmentById(idRequirment);
+
+			} else {
+				RedirectUtils.redirectTo(NOT_FOUND);
+			}
+
+		} catch (Exception ex) {
+			RedirectUtils.redirectTo(NOT_FOUND);
+		}
+
+	}
+
+	private boolean isAllowedToContinue() {
+		return requirmentService.accessRequirement( project.getIdProject(),userSessionBean.getUserId() );
 
 	}
 
@@ -66,7 +94,7 @@ public class TeamLeaderCreateTasksBean {
 		if (task.getEndDate().after(task.getStartDate())) {
 			task.setRequirment(currentRequirement);
 			task.setValidity((byte) 1);
-			task.setCreatedBy(userId);
+			task.setCreatedBy(userSessionBean.getUserId());
 
 			taskService.addTask(task);
 			tasks = taskService.requirmentTasks(idRequirment);
@@ -236,5 +264,15 @@ public class TeamLeaderCreateTasksBean {
 	public void setCurrentRequirement(Requirment currentRequirement) {
 		this.currentRequirement = currentRequirement;
 	}
+
+	public String getIdFromURL() {
+		return idFromURL;
+	}
+
+	public void setIdFromURL(String idFromURL) {
+		this.idFromURL = idFromURL;
+	}
+
+
 
 }
