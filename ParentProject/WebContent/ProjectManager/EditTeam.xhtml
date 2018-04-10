@@ -7,43 +7,112 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:o="http://omnifaces.org/ui"
 	xmlns:of="http://omnifaces.org/functions">
+	<f:metadata>
+	<f:viewParam name="id" value="#{editTeamBean.id}" />
+	<f:viewAction action="#{editTeamBean.allowedTeam}" />
+</f:metadata>
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-	<link href="./css/styles.css" rel="stylesheet" type="text/css" />
-	<title>Edit Team</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+	<link rel="stylesheet"
+		href="https://www.w3schools.com/lib/w3-theme-black.css" />
+	<link rel="stylesheet"
+		href="https://fonts.googleapis.com/css?family=Roboto" />
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+	<style>
+html, body, h1, h2, h3, h4, h5, h6 {
+	font-family: "Roboto", sans-serif;
+}
+
+.w3-sidebar {
+	z-index: 3;
+	width: 250px;
+	top: 43px;
+	bottom: 0;
+	height: inherit;
+}
+.ui-picklist .ui-picklist-list{
+height:300px;
+width: 300px
+}
+</style>
+	<title>Edit Team </title>
 </h:head>
 <h:body>
 
-	<div class="header1"></div>
+	<p:growl id="growl" showDetail="true" life="3000" />
+	<h:form id="form">
+		<div class="w3-top">
+			<div class="w3-bar w3-theme w3-top w3-left-align w3-large">
+				<a
+					class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white w3-large w3-theme-l1"
+					href="javascript:void(0)" onclick="w3_open()"><i
+					class="fa fa-bars"></i></a>
+				<h:outputText value="Welcome #{userSessionBean.userName}" />
+				<br />
+			</div>
+		</div>
+		<nav
+			class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5 w3-animate-left"
+			id="mySidebar"> <a href="javascript:void(0)"
+			onclick="w3_close()"
+			class="w3-right w3-xlarge w3-padding-large w3-hover-black w3-hide-large"
+			title="Close Menu"> <i class="fa fa-remove"></i>
+		</a>
+		<h4 class="w3-bar-item">
+			<b>Menu</b>
+		</h4>
+		<h:commandLink class="w3-bar-item w3-button w3-hover-black"
+			value="Project" action="ProjectManager.xhtml" /> <h:commandLink
+			class="w3-bar-item w3-button w3-hover-black" value="Team"
+			action="Team.xhtml?faces-redirect=true" /> <h:commandLink
+			class="w3-bar-item w3-button w3-hover-black" value="Logout"
+			actionListener="#{logOutBean.logout}" /> </nav>
 
-	<div class="row">
-		<div class="column side"></div>
-		<div class="column middle" align="center">
-			<p:growl id="growl" showDetail="true" life="2000" />
-			<h:form id="myForm">
-			<h3>Edit Team</h3>
-				<p:panelGrid columns="2">
-				
-					<p:outputLabel value="Project Manager" id="PM" for="projectManager" />
-					<p:selectOneMenu id="projectManager" value="#{editTeamBean.projectManager}"
-						converter="omnifaces.SelectItemsConverter" required="true"
-						requiredMessage="Project Manager is Required ">
+	</h:form>
+
+	<h:form id="myForm">
+		<div class="w3-main" style="margin-left: 250px">
+
+			<div class="w3-row w3-padding-64">
+				<div class="w3-twothird w3-container" style="width: 85%"
+					align="center">
+
+					<h3>Edit Team <p:outputLabel value="#{editTeamBean.toEdit.nameTeam}" /></h3>
+					
+					<p:outputLabel for="teamName" value="Team Name"/>
+					<p:inputText value="#{editTeamBean.toEdit.nameTeam}" id="teamName"/>
+					<p:panelGrid columns="2">
 
 
-						<f:selectItem noSelectionOption="false" itemLabel="Select PM" />
-						<f:selectItems value="#{editTeamBean.userPm}" var="user"
-							itemLabel="#{user.nameUser}" />
 
-					</p:selectOneMenu>
 
+
+					</p:panelGrid>
 					
 
-				</p:panelGrid>
-<p:commandButton value="edit" actionListener="#{editTeamBean.editTeam}"/>
-			</h:form>
+					<p:pickList id="pickList" value="#{editTeamBean.members}"
+						var="members"
+						itemLabel="#{members.nameUser}  #{members.role.nameRole}"
+						itemValue="#{members}"  >
+						<o:converter converterId="omnifaces.ListConverter"
+							list="#{editTeamBean.members.target}" />
+						<o:converter converterId="omnifaces.ListConverter"
+							list="#{editTeamBean.members.source}" />
+					</p:pickList>
+					<p:commandButton value="Edit"
+						actionListener="#{editTeamBean.editTeam}" process="@this myForm" update="growl"/>
+				
+				<p:commandButton value="Cancel"
+							actionListener="#{editTeamBean.redirectToTeams}" process="@this" />
+
+				</div>
+			</div>
 		</div>
-		<div class="column side"></div>
-	</div>
+	</h:form>
+
 
 </h:body>
 </html>

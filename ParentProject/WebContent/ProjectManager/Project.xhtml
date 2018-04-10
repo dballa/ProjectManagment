@@ -7,9 +7,9 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:o="http://omnifaces.org/ui"
 	xmlns:of="http://omnifaces.org/functions">
-	<f:metadata>
+<f:metadata>
 	<f:viewParam name="id" value="#{editProject.id}" />
-	<f:viewAction action="#{editProject.allowedProject}"/>
+	<f:viewAction action="#{editProject.allowedProject}" />
 </f:metadata>
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -78,7 +78,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 
 
 
-					<h3>Edit Project</h3>
+					<h3>Edit Project <p:outputLabel value="#{editProject.toEdit.nameProject}"/> </h3>
 					<h:panelGrid columns="2" style="float:center">
 
 						<h:outputLabel for="projectName" value="Project Name: " />

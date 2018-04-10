@@ -1,14 +1,17 @@
 package com.ikubinfo.internship.project.managedbean;
 
+import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+
+import org.primefaces.model.DualListModel;
 
 import com.ikubinfo.internship.project.pojo.Member;
 import com.ikubinfo.internship.project.pojo.MemberPK;
@@ -16,6 +19,7 @@ import com.ikubinfo.internship.project.pojo.Team;
 import com.ikubinfo.internship.project.pojo.User;
 import com.ikubinfo.internship.project.service.TeamService;
 import com.ikubinfo.internship.project.service.UserService;
+import com.ikubinfo.internship.project.utils.RedirectUtils;
 
 @ManagedBean
 @ViewScoped
@@ -26,18 +30,14 @@ public class EditTeamBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Team toEdit;
-	private List<User> userPm = new ArrayList<User>();
-	private List<User> userTl = new ArrayList<User>();
-	private List<User> userDev = new ArrayList<User>();
-	private List<User> allUser = new ArrayList<User>();
-	private List<User> userBa = new ArrayList<User>();
-	private List<User> selectedDev = new ArrayList<User>();
+	private static final String NOT_FOUND = "/PageNotFound.xhtml";
+	private static final String TO_TEAMS="/ProjectManager/Team.xhtml";
 	private int toEditId;
-	private User projectManager;
-	private User businessAnalyst;
-	private User teamLeader;
-	private Member member = new Member();
-	private MemberPK memberPk = new MemberPK();
+	private List<User> notMembersOfThisTeam;
+	private List<User> membersOfTeam;
+	private String id;
+
+	private DualListModel<User> members;
 
 	@ManagedProperty(value = "#{userService}")
 	private UserService userService;
@@ -46,54 +46,102 @@ public class EditTeamBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		String id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
+	
 
-		toEditId = Integer.parseInt(id);
-		System.out.println(toEditId);
-		toEdit = teamService.getTeamById(toEditId);
-		allUser = userService.allUsers();
+		
+		
+		
+	}
+	
+	
+	
+	public void allowedTeam() throws IOException {
 
-		for (User user : allUser) {
-			if (user.getRole().getNameRole().equals("Project Manager")) {
-
-				userPm.add(user);
-			} else if (user.getRole().getNameRole().equals("Team Leader")) {
-				userTl.add(user);
-			} else if (user.getRole().getNameRole().equals("Developer")) {
-				userDev.add(user);
-			} else if (user.getRole().getNameRole().equals("Business Analyst")) {
-				userBa.add(user);
+		try {
+			toEditId = Integer.parseInt(id);
+			if (isAllowedToContinue(toEditId)) {
+			
+				toEdit = teamService.getTeamById(toEditId);
+				membersOfTeam = teamService.teamInfo(toEdit);
+				notMembersOfThisTeam = teamService.notMembersOfThisTeam(toEdit);
+				members = new DualListModel<User>(notMembersOfThisTeam, membersOfTeam);
+			} else {
+				RedirectUtils.redirectTo(NOT_FOUND);
 			}
 
+		} catch (Exception ex) {
+			RedirectUtils.redirectTo(NOT_FOUND);
 		}
 
 	}
-
-	public void editTeam() {
-
-		teamService.editTeam(projectManager, toEdit, member, memberPk);
-		
+	
+	private boolean isAllowedToContinue(int id) {
+		return teamService.accessTeam(id);
 
 	}
+
+	
+
+	public void editTeam() throws IOException {
+
+		toEdit.getMembers().clear();
+		
+		if (checkTargetList()) {
+		
+		
+		for (User user : members.getTarget()) {
+
+			Member member = new Member();
+			member.setUser(user);
+
+			member.setTeam(toEdit);
+			MemberPK memberPk = new MemberPK();
+			memberPk.setIdTeam(toEditId);
+			memberPk.setMember(user.getIdUser());
+			member.setId(memberPk);
+			member.setValidity((byte) 1);
+			toEdit.getMembers().add(member);
+
+		}
+		teamService.deleteMembersOfTeam(toEdit);
+		teamService.editTeam(toEdit);
+		
+		RedirectUtils.redirectTo(TO_TEAMS);
+		}
+		else {
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage("Error, Team should have 1 Project Manager,1 Team Leader and 1 Business Analyst"));
+		}
+	}
+	public boolean checkTargetList() {
+		int pm=0;
+		int tl=0;
+		int ba=0;
+		for(User user: members.getTarget()) {
+			if (user.getRole().getNameRole().equals("Project Manager")) {
+				pm++;
+			}
+			if (user.getRole().getNameRole().equals("Team Leader")) {
+				tl++;
+			}
+			if(user.getRole().getNameRole().equals("Business Analyst")) {
+				ba++;
+			}
+			
+		}
+		if(pm==1&&tl==1&&ba==1) {
+			return true;
+		}
+		else return false;
+	}
+	
+	public void redirectToTeams() throws IOException {
+		RedirectUtils.redirectTo(TO_TEAMS);
+	}
+	
 
 	public Team getToEdit() {
 		return toEdit;
-	}
-
-	public List<User> getUserPm() {
-		return userPm;
-	}
-
-	public List<User> getUserTl() {
-		return userTl;
-	}
-
-	public List<User> getUserDev() {
-		return userDev;
-	}
-
-	public List<User> getAllUser() {
-		return allUser;
 	}
 
 	public UserService getUserService() {
@@ -102,22 +150,6 @@ public class EditTeamBean implements Serializable {
 
 	public void setToEdit(Team toEdit) {
 		this.toEdit = toEdit;
-	}
-
-	public void setUserPm(List<User> userPm) {
-		this.userPm = userPm;
-	}
-
-	public void setUserTl(List<User> userTl) {
-		this.userTl = userTl;
-	}
-
-	public void setUserDev(List<User> userDev) {
-		this.userDev = userDev;
-	}
-
-	public void setAllUser(List<User> allUser) {
-		this.allUser = allUser;
 	}
 
 	public void setUserService(UserService userService) {
@@ -140,60 +172,36 @@ public class EditTeamBean implements Serializable {
 		this.toEditId = toEditId;
 	}
 
-	public List<User> getUserBa() {
-		return userBa;
+	public List<User> getNotMembersOfThisTeam() {
+		return notMembersOfThisTeam;
 	}
 
-	public void setUserBa(List<User> userBa) {
-		this.userBa = userBa;
+	public List<User> getMembersOfTeam() {
+		return membersOfTeam;
 	}
 
-	public List<User> getSelectedDev() {
-		return selectedDev;
+	public void setNotMembersOfThisTeam(List<User> notMembersOfThisTeam) {
+		this.notMembersOfThisTeam = notMembersOfThisTeam;
 	}
 
-	public void setSelectedDev(List<User> selectedDev) {
-		this.selectedDev = selectedDev;
+	public void setMembersOfTeam(List<User> membersOfTeam) {
+		this.membersOfTeam = membersOfTeam;
 	}
 
-	public User getProjectManager() {
-		return projectManager;
+	public DualListModel<User> getMembers() {
+		return members;
 	}
 
-	public User getBusinessAnalyst() {
-		return businessAnalyst;
+	public void setMembers(DualListModel<User> members) {
+		this.members = members;
 	}
 
-	public User getTeamLeader() {
-		return teamLeader;
+	public String getId() {
+		return id;
 	}
 
-	public void setProjectManager(User projectManager) {
-		this.projectManager = projectManager;
-	}
-
-	public void setBusinessAnalyst(User businessAnalyst) {
-		this.businessAnalyst = businessAnalyst;
-	}
-
-	public void setTeamLeader(User teamLeader) {
-		this.teamLeader = teamLeader;
-	}
-
-	public Member getMember() {
-		return member;
-	}
-
-	public void setMember(Member member) {
-		this.member = member;
-	}
-
-	public MemberPK getMemberPk() {
-		return memberPk;
-	}
-
-	public void setMemberPk(MemberPK memberPk) {
-		this.memberPk = memberPk;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 }

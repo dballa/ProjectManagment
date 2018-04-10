@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
-public class MyFilter implements Filter {
+public class LoginFilter implements Filter {
 	private ServletContext context;
 
 	@Override
@@ -28,13 +28,13 @@ public class MyFilter implements Filter {
 			HttpServletResponse res = (HttpServletResponse) response;
 			String contextPath = req.getContextPath();
 			HttpSession session = req.getSession(false);
-			boolean isLogined = session != null && session.getAttribute("userId") != null
-					&& session.getAttribute("userRole").equals("Project Manager");
+			boolean isLogined = session != null && session.getAttribute("userId") != null;
+					
 
 			
 			if (isLogined) {
 				
-				res.sendRedirect(contextPath + "/NoPermission.xhtml");
+				res.sendRedirect(contextPath + "/Login.xhtml");
 			} else {
 				chain.doFilter(request, response);
 			}

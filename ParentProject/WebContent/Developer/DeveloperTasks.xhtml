@@ -33,6 +33,9 @@ html, body, h1, h2, h3, h4, h5, h6 {
 	bottom: 0;
 	height: inherit;
 }
+.red{
+color: red;
+}
 </style>
 	<title>Tasks</title>
 </h:head>
@@ -87,17 +90,17 @@ html, body, h1, h2, h3, h4, h5, h6 {
 					<p:dataGrid var="task" value="#{developerTasksBean.tasks}"
 						columns="3" layout="grid" rows="12" paginator="true" id="tasks"
 						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-						rowsPerPageTemplate="6,12,16">
+						rowsPerPageTemplate="6,12,16"   >  
 
 						<f:facet name="header">
             Tasks
         </f:facet>
 
-						<p:panel header="#{task.nameTask}" style="text-align:center">
+						<p:panel header="#{task.nameTask}" style="text-align:center" >
 							<h:panelGrid columns="1" style="width:100%">
 
 
-								<h:outputText value="#{task.endDate}" />
+								<h:outputText value="#{task.endDate}" styleClass="#{task.checkEndDate?'red':''}" />
 								<h:outputText value="#{task.status.nameStatus}" />
 								<p:commandLink update=":form:taskDetail"
 									oncomplete="PF('taskDialog').show()" title="Task Detail">

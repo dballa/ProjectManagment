@@ -31,7 +31,7 @@ public class TeamLeaderFilter implements Filter{
 			
 			if (isLogined) {
 				
-				res.sendRedirect(contextPath + "/Login.xhtml");
+				res.sendRedirect(contextPath + "/NoPermission.xhtml");
 			} else {
 				chain.doFilter(request, response);
 			}

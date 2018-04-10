@@ -27,7 +27,7 @@ public class TeamEntity implements Serializable {
 	private byte validity;
 
 	//bi-directional many-to-one association to Member
-	@OneToMany(mappedBy="team",cascade=CascadeType.MERGE)
+	@OneToMany(mappedBy="team",cascade=CascadeType.ALL)
 	private List<MemberEntity> members=new ArrayList<MemberEntity>();
 
 	//bi-directional many-to-one association to Project

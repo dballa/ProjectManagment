@@ -3,6 +3,8 @@ package com.ikubinfo.internship.project.pojo;
 import java.util.Date;
 import java.util.List;
 
+import com.ikubinfo.internship.project.utils.ConstantsEnum;
+
 public class Project {
 	private int idProject;
 
@@ -34,9 +36,10 @@ public class Project {
 	
 
 	public boolean isDisabled() {
-		return "Waiting BA".equals(status.getNameStatus());
+		return ConstantsEnum.BA_STATUS.getStr().equals(status.getNameStatus());
 	}
 
+	
 	public void setDisabled(boolean disabled) {
 		this.disabled = disabled;
 	}
@@ -160,8 +163,8 @@ public class Project {
 
 	public boolean isCheckEndDate() {
 	Date todayDate=new Date();
-	System.out.println(todayDate);
-		return todayDate.after(endDate);
+	
+		return todayDate.after(endDate)&&!"Done".equals(status.getNameStatus());
 	}
 
 	public void setCheckEndDate(boolean checkEndDate) {

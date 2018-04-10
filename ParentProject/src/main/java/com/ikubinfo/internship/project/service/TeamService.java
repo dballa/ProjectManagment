@@ -20,6 +20,7 @@ public class TeamService {
 	private TeamDao teamDao;
 	@Autowired
 	private MemberDao memberDao;
+
 	public List<Team> allTeams() {
 		return teamDao.allTeams();
 
@@ -31,32 +32,20 @@ public class TeamService {
 
 	}
 
-	public void removeTeam(Team team)  {
+	public void removeTeam(Team team) {
 
-	
-
-			team.setValidity((byte) 0);
-			teamDao.removeTeam(team);
-
-		
-		
+		team.setValidity((byte) 0);
+		teamDao.removeTeam(team);
 
 	}
-	
 
-public void editTeam(User user,Team team,Member member,MemberPK memberPk) {
+	public void editTeam(Team team) {
 
-	memberPk.setIdTeam(team.getIdTeam());
-	memberPk.setMember(user.getIdUser());
-	member.setTeam(team);
-		member.setUser(user);
-		member.setId(memberPk);
-		member.setValidity((byte) 1);
-		team.getMembers().clear();
-		team.getMembers().add(member);
-	
-	
 		teamDao.editTeam(team);
+	}
+
+	public List<User> notMembersOfThisTeam(Team team) {
+		return teamDao.notMembersOfThisTeam(team);
 	}
 
 	public List<User> teamInfo(Team team) {
@@ -67,5 +56,13 @@ public void editTeam(User user,Team team,Member member,MemberPK memberPk) {
 	public Team getTeamById(int id) {
 
 		return teamDao.getTeamById(id);
+	}
+
+	public void deleteMembersOfTeam(Team team) {
+		teamDao.deleteMembersOfTeam(team);
+	}
+	public boolean accessTeam(int idTeam) {
+		
+		return teamDao.accessTeam(idTeam);
 	}
 }

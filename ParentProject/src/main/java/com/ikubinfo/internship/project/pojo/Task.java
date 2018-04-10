@@ -20,7 +20,7 @@ public class Task {
 
 	private String description;
 	
-	private String type="TASK";
+	private boolean checkEndDate;
 	
 	private Date endDate;
 
@@ -124,9 +124,7 @@ public class Task {
 		this.requirment = requirment;
 	}
 
-	public  String getType() {
-		return type;
-	}
+	
 
 	@Override
 	public String toString() {
@@ -140,11 +138,19 @@ public class Task {
 		return assignedTo;
 	}
 
+	public boolean isCheckEndDate() {
+		Date todayDate=new Date();
+		
+			return todayDate.after(endDate)&&!"Done".equals(status.getNameStatus());
+	}
+
+	public void setCheckEndDate(boolean checkEndDate) {
+		this.checkEndDate = checkEndDate;
+	}
+
 	public void setAssignedTo(User assignedTo) {
 		this.assignedTo = assignedTo;
 	}
 
-	public void setType(String type) {
-		this.type = type;
-	}
+
 }

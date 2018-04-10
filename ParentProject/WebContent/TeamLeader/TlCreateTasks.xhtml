@@ -83,6 +83,9 @@ html, body, h1, h2, h3, h4, h5, h6 {
 						<p:dataTable id="taskTable"
 							value="#{teamLeaderCreateTasksBean.tasks}" var="task"
 							rowKey="task.idTask">
+							<f:facet name="header">
+								Tasks of requirement <p:outputLabel value="#{teamLeaderCreateTasksBean.currentRequirement.nameRequirment}"/>
+								 </f:facet>
 							<p:column headerText="Name">
 								<h:outputText value="#{task.nameTask}" />
 
@@ -206,7 +209,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 			</p:panel>
 			<p:commandButton value="Edit"
 				actionListener="#{teamLeaderCreateTasksBean.editTask}"
-				process="dlgForm2" onsuccess="PF('dlg2').hide();"
+				process="dlgForm2" oncomplete="if (!args.validationFailed){PF('dlg2').hide()}"
 				update="myForm growl" />
 
 			<p:commandButton value="Cancel" onclick="PF('dlg2').hide()"

@@ -99,4 +99,65 @@ public class User {
 	public void setPermissions(List<Permission> permissions) {
 		this.permissions = permissions;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + idUser;
+		result = prime * result + ((members == null) ? 0 : members.hashCode());
+		result = prime * result + ((nameUser == null) ? 0 : nameUser.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((permissions == null) ? 0 : permissions.hashCode());
+		result = prime * result + ((role == null) ? 0 : role.hashCode());
+		result = prime * result + validity;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (idUser != other.idUser)
+			return false;
+		if (members == null) {
+			if (other.members != null)
+				return false;
+		} else if (!members.equals(other.members))
+			return false;
+		if (nameUser == null) {
+			if (other.nameUser != null)
+				return false;
+		} else if (!nameUser.equals(other.nameUser))
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (permissions == null) {
+			if (other.permissions != null)
+				return false;
+		} else if (!permissions.equals(other.permissions))
+			return false;
+		if (role == null) {
+			if (other.role != null)
+				return false;
+		} else if (!role.equals(other.role))
+			return false;
+		if (validity != other.validity)
+			return false;
+		return true;
+	}
 }

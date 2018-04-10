@@ -41,7 +41,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 
 
 	<div class="header1">
-		<p:growl id="growl" showDetail="true" life="2000" />
+		<p:growl id="growl" showDetail="true" life="3000" />
 		<h:form id="form">
 			<div class="w3-top">
 				<div class="w3-bar w3-theme w3-top w3-left-align w3-large">
@@ -83,13 +83,13 @@ html, body, h1, h2, h3, h4, h5, h6 {
 			</h:form>
 			<h:form>
 				<h:panelGrid columns="3">
-					<h:outputLabel for="selectStatus" value="Change Project Status" />
+					<h:outputLabel for="selectStatus" value="Change Status of Project #{requirmentBean.project.nameProject}" />
 					<p:selectOneMenu id="selectStatus"
 						value="#{requirmentBean.project.status}"
 						converter="omnifaces.SelectItemsConverter">
 
 
-						<f:selectItem noSelectionOption="true" itemLabel="Select Status" />
+						<f:selectItem noSelectionOption="true" itemLabel="Selected is: #{requirmentBean.project.status.nameStatus}" />
 						<f:selectItems value="#{commonDataBean.statusList}"
 							var="status" itemLabel="#{status.nameStatus}" />
 
@@ -111,7 +111,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 						<p:dataTable id="baProjects" var="req"
 							value="#{requirmentBean.requirements}">
 							<f:facet name="header">
-								Requirements
+								Requirements of <p:outputLabel value="#{requirmentBean.project.nameProject}"/>
 								 </f:facet>
 							<p:column headerText="Requrement Name">
 								<h:outputText value="#{req.nameRequirment}" />
@@ -196,7 +196,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 						converter="omnifaces.SelectItemsConverter" required="true">
 
 
-						<f:selectItem noSelectionOption="true" itemLabel="Select Status" />
+						<f:selectItem noSelectionOption="true" itemLabel="Selected is: #{requirmentBean.toEdit.status.nameStatus}" />
 						<f:selectItems value="#{commonDataBean.filtredStatus}" var="status"
 							itemLabel="#{status.nameStatus}" />
 
@@ -207,9 +207,9 @@ html, body, h1, h2, h3, h4, h5, h6 {
 					<p:selectOneMenu id="prioritySelect"
 						value="#{requirmentBean.toEdit.priority}"
 						converter="omnifaces.SelectItemsConverter" required="true">
+						
 
-
-						<f:selectItem noSelectionOption="true" itemLabel="Select Priority" />
+						<f:selectItem noSelectionOption="true" itemLabel="Selected is #{requirmentBean.toEdit.priority.namePriority}" />
 						<f:selectItems value="#{commonDataBean.priorityList}" var="priority"
 							itemLabel="#{priority.namePriority}" />
 
@@ -222,8 +222,9 @@ html, body, h1, h2, h3, h4, h5, h6 {
 			</p:panel>
 			<p:commandButton value="Edit"
 				actionListener="#{requirmentBean.editRequirment}"
-				process="formEdit" onsuccess="PF('dlgEdit').hide();"
-				update="myForm growl" />
+				process="formEdit" 
+				update="myForm growl" 
+				oncomplete="if (!args.validationFailed){PF('dlgEdit').hide()}"/>
 
 
 	
@@ -301,7 +302,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 			<p:dataList value="#{requirmentBean.requirmentTasks}" var="task"
 				type="ordered" id="tasksTable">
 				<f:facet name="header">
-            Tasks
+            Tasks 
         </f:facet>
      Name: #{task.nameTask}<br />
       Status: #{task.status.nameStatus}<br />
