@@ -143,11 +143,11 @@ color: red;
 								<h:outputText value="Status" />
 								<p:selectOneMenu id="statusSelect"
 									value="#{developerTasksBean.selectedTask.status}"
-									converter="omnifaces.SelectItemsConverter">
+									converter="omnifaces.SelectItemsConverter" required="true" requiredMessage="Status is Required">
 
 
 									<f:selectItem noSelectionOption="true"
-										itemLabel="Selected is : #{developerTaskBean.selectedTask.status.nameStatus}" />
+										itemLabel="Selected is : #{developerTasksBean.selectedTask.status.nameStatus}" />
 									<f:selectItems value="#{commonDataBean.filtredStatus}"
 										var="status" itemLabel="#{status.nameStatus}" />
 
@@ -155,7 +155,7 @@ color: red;
 
 								<p:commandButton value="Save"
 									actionListener="#{developerTasksBean.editTask}"
-									onsuccess="PF('taskDialog').hide()" update=":form:tasks" />
+									oncomplete="if (!args.validationFailed){PF('taskDialog').hide()}" update=":form:tasks growl" />
 
 							</p:panelGrid>
 						</p:outputPanel>

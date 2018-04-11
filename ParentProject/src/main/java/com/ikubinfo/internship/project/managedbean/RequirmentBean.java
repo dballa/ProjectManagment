@@ -22,6 +22,7 @@ import com.ikubinfo.internship.project.service.ProjectService;
 import com.ikubinfo.internship.project.service.RequirmentService;
 import com.ikubinfo.internship.project.service.StatusService;
 import com.ikubinfo.internship.project.service.TaskService;
+import com.ikubinfo.internship.project.utils.StatesEnum;
 import com.ikubinfo.internship.project.utils.RedirectUtils;
 
 @ManagedBean
@@ -88,7 +89,7 @@ public class RequirmentBean {
 
 	private boolean isAllowedToContinue(int id) {
 		return projectService.accessProject(userSessionBean.getUserId(), id)
-				&& projectService.getProjectById(id).getStatus().getNameStatus().equals("Waiting BA");
+				&& projectService.getProjectById(id).getStatus().getNameStatus().equals(StatesEnum.BA_STATUS.getStr());
 
 	}
 
@@ -128,12 +129,12 @@ public class RequirmentBean {
 			FacesContext context = FacesContext.getCurrentInstance();
 
 			context.addMessage(null,
-					new FacesMessage("Success Requirement " + toDelete.getNameRequirment() + "  Deleted"));
+					new FacesMessage("","Success Requirement " + toDelete.getNameRequirment() + "  Deleted"));
 		} else {
 
 			FacesContext context = FacesContext.getCurrentInstance();
 
-			context.addMessage(null, new FacesMessage("!! Set Status as Done to delete Requirement"));
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Warning","!! Set Status as Done to delete Requirement"));
 		}
 	}
 
@@ -145,7 +146,7 @@ public class RequirmentBean {
 		requirements = requirmentService.getProjectRequirements(idProject);
 		FacesContext context = FacesContext.getCurrentInstance();
 
-		context.addMessage(null, new FacesMessage("Success Requirment" + toEdit.getNameRequirment() + "Edited"));
+		context.addMessage(null, new FacesMessage("","Success Requirment" + toEdit.getNameRequirment() + "Edited"));
 	}
 
 	public List<Requirment> getRequrements() {

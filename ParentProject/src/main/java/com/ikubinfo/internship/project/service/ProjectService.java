@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.ikubinfo.internship.project.dao.ProjectDao;
 import com.ikubinfo.internship.project.pojo.Project;
 import com.ikubinfo.internship.project.pojo.User;
+import com.ikubinfo.internship.project.utils.StatesEnum;
 
 @Service
 public class ProjectService {
@@ -51,7 +52,7 @@ project.setValidity((byte) 1);
 		List<Project> allProjects=projectDao.tlProjects(id);
 		List<Project> filtredProjects=new ArrayList<Project>();
 		for (Project project:allProjects) {
-			if(!"Waiting BA".equals(project.getStatus().getNameStatus())) {
+			if(!StatesEnum.BA_STATUS.getStr().equals(project.getStatus().getNameStatus())) {
 				filtredProjects.add(project);
 			}
 		}

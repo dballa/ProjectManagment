@@ -100,11 +100,11 @@ public class TeamLeaderCreateTasksBean {
 			tasks = taskService.requirmentTasks(idRequirment);
 			FacesContext context = FacesContext.getCurrentInstance();
 
-			context.addMessage(null, new FacesMessage("Success" + "Task " + task.getNameTask() + " Added"));
+			context.addMessage(null, new FacesMessage("","Success" + "Task " + task.getNameTask() + " Added"));
 		} else {
 			FacesContext context = FacesContext.getCurrentInstance();
 
-			context.addMessage(null, new FacesMessage("!! End date should be after start date"));
+			context.addMessage(null, new FacesMessage("","!! End date should be after start date"));
 		}
 
 	}
@@ -119,11 +119,11 @@ public class TeamLeaderCreateTasksBean {
 			tasks = taskService.requirmentTasks(idRequirment);
 			FacesContext context = FacesContext.getCurrentInstance();
 
-			context.addMessage(null, new FacesMessage("Success" + "Task " + toEdit.getNameTask() + " Edited"));
+			context.addMessage(null, new FacesMessage("","Success" + "Task " + toEdit.getNameTask() + " Edited"));
 		} else {
 			FacesContext context = FacesContext.getCurrentInstance();
 
-			context.addMessage(null, new FacesMessage("!! End date should be after start date"));
+			context.addMessage(null, new FacesMessage("","!! End date should be after start date"));
 		}
 
 	}
@@ -141,7 +141,7 @@ public class TeamLeaderCreateTasksBean {
 		} else {
 			FacesContext context = FacesContext.getCurrentInstance();
 
-			context.addMessage(null, new FacesMessage("Set status as DONE to delete task"));
+			context.addMessage(null, new FacesMessage("","Set status as DONE to delete task"));
 		}
 	}
 

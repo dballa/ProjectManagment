@@ -3,7 +3,7 @@ package com.ikubinfo.internship.project.pojo;
 import java.util.Date;
 import java.util.List;
 
-import com.ikubinfo.internship.project.utils.ConstantsEnum;
+import com.ikubinfo.internship.project.utils.StatesEnum;
 
 public class Project {
 	private int idProject;
@@ -36,7 +36,7 @@ public class Project {
 	
 
 	public boolean isDisabled() {
-		return ConstantsEnum.BA_STATUS.getStr().equals(status.getNameStatus());
+		return StatesEnum.BA_STATUS.getStr().equals(status.getNameStatus());
 	}
 
 	

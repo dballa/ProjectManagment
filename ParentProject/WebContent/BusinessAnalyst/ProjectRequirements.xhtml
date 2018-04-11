@@ -286,7 +286,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 
 				<p:commandButton value="Save"
 					action="#{requirmentBean.addRequirment}"
-					update="myForm:baProjects growl" onsuccess="PF('dlg1').hide();"
+					update="myForm:baProjects growl" oncomplete="if (!args.validationFailed){PF('dlg1').hide()}"
 					process="createDialog " />
 				<p:commandButton value="Close" ajax="true" update="panel"
 					resetValues="true" onclick="PF('dlg1').hide();" />

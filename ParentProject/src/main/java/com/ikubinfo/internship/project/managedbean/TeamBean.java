@@ -6,12 +6,12 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-
 
 import com.ikubinfo.internship.project.pojo.Team;
 import com.ikubinfo.internship.project.pojo.User;
@@ -27,7 +27,7 @@ public class TeamBean {
 	private Team teamInfo;
 	private List<User> teamMembers = new ArrayList<User>();
 	private int toEditId;
-	private static String TEAM="/ProjectManager/EditTeam.xhtml?id=";
+	private static String TEAM = "/ProjectManager/EditTeam.xhtml?id=";
 	@ManagedProperty(value = "#{projectManager}")
 	private ProjectManagerBean projectManagerBean;
 	@ManagedProperty(value = "#{teamService}")
@@ -53,14 +53,22 @@ public class TeamBean {
 	}
 
 	public void removeTeam() {
+		System.out.println(toDelete);
+		System.out.println(teamService.isTeamWithoutProject(toDelete) + "ne bean");
+		if (teamService.isTeamWithoutProject(toDelete)) {
 
-		
 			teamService.removeTeam(toDelete);
-		
-			teams = teamService.allTeams();
-		FacesContext context = FacesContext.getCurrentInstance();
 
-		context.addMessage(null, new FacesMessage("Success Team" + team.getNameTeam() + " Deleted"));
+			teams = teamService.allTeams();
+			FacesContext context = FacesContext.getCurrentInstance();
+
+			context.addMessage(null, new FacesMessage("Success Team" + toDelete.getNameTeam() + " Deleted"));
+		} else {
+			FacesContext context = FacesContext.getCurrentInstance();
+
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning",
+					"Team is working on a project on a Project"));
+		}
 	}
 
 	public void findTeamInfo() {
@@ -72,8 +80,8 @@ public class TeamBean {
 	}
 
 	public void redirectToEdit() throws IOException {
-		RedirectUtils.redirectTo(TEAM+toEditId);
-		
+		RedirectUtils.redirectTo(TEAM + toEditId);
+
 	}
 
 	public Team getTeam() {

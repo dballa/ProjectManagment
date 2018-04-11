@@ -15,6 +15,7 @@ import com.ikubinfo.internship.project.pojo.Project;
 import com.ikubinfo.internship.project.pojo.Requirment;
 import com.ikubinfo.internship.project.service.ProjectService;
 import com.ikubinfo.internship.project.service.RequirmentService;
+import com.ikubinfo.internship.project.utils.StatesEnum;
 import com.ikubinfo.internship.project.utils.RedirectUtils;
 
 /*
@@ -63,7 +64,7 @@ public class TeamLeaderRequirementsBean {
 
 	private boolean isAllowedToContinue(int id) {
 		return projectService.accessProject(userSessionBean.getUserId(), id)
-				&& !projectService.getProjectById(id).getStatus().getNameStatus().equals("Waiting BA");
+				&& !projectService.getProjectById(id).getStatus().getNameStatus().equals(StatesEnum.BA_STATUS.getStr());
 	}
 
 	public String redirectToTaskCreate() throws IOException {

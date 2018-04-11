@@ -77,7 +77,7 @@ public class ProjectManagerBean {
 		} else {
 			FacesContext context = FacesContext.getCurrentInstance();
 
-			context.addMessage(null, new FacesMessage("!! End date should be after start date"));
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Warning","!! End date should be after start date"));
 		}
 	}
 
@@ -93,7 +93,7 @@ public class ProjectManagerBean {
 		} else {
 			FacesContext context = FacesContext.getCurrentInstance();
 
-			context.addMessage(null, new FacesMessage("Set status as Done to delete a project"));
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Warning","Set status as Done to delete a project"));
 
 		}
 	}

@@ -12,6 +12,7 @@ import com.ikubinfo.internship.project.pojo.Priority;
 import com.ikubinfo.internship.project.pojo.Status;
 import com.ikubinfo.internship.project.service.PriorityService;
 import com.ikubinfo.internship.project.service.StatusService;
+import com.ikubinfo.internship.project.utils.StatesEnum;
 
 @ManagedBean
 @ApplicationScoped
@@ -36,7 +37,7 @@ public class CommonDataBean {
 
 			for (Status status : statusList) {
 
-				if (!"Waiting BA".equals(status.getNameStatus())) {
+				if (!StatesEnum.BA_STATUS.getStr().equals(status.getNameStatus())) {
 
 					filtredStatus.add(status);
 				}

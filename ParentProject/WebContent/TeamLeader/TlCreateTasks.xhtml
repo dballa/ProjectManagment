@@ -33,6 +33,9 @@ html, body, h1, h2, h3, h4, h5, h6 {
 	bottom: 0;
 	height: inherit;
 }
+.red{
+color: red;
+}
 </style>
 	<title>Tasks</title>
 </h:head>
@@ -82,7 +85,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 					<h:form id="myForm">
 						<p:dataTable id="taskTable"
 							value="#{teamLeaderCreateTasksBean.tasks}" var="task"
-							rowKey="task.idTask">
+							rowKey="task.idTask"  rowStyleClass="#{task.checkEndDate?'red':''}">
 							<f:facet name="header">
 								Tasks of requirement <p:outputLabel value="#{teamLeaderCreateTasksBean.currentRequirement.nameRequirment}"/>
 								 </f:facet>

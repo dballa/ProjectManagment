@@ -18,6 +18,7 @@ import com.ikubinfo.internship.project.pojo.Team;
 import com.ikubinfo.internship.project.service.ProjectService;
 import com.ikubinfo.internship.project.service.StatusService;
 import com.ikubinfo.internship.project.service.TeamService;
+import com.ikubinfo.internship.project.utils.StatesEnum;
 import com.ikubinfo.internship.project.utils.RedirectUtils;
 
 @ManagedBean
@@ -64,7 +65,7 @@ public class EditProject {
 
 	private boolean isAllowedToContinue(int id) {
 		return projectService.accessProject(userSessionBean.getUserId(), id)
-				&& !projectService.getProjectById(id).getStatus().getNameStatus().equals("Waiting BA");
+				&& !projectService.getProjectById(id).getStatus().getNameStatus().equals(StatesEnum.BA_STATUS.getStr());
 
 	}
 

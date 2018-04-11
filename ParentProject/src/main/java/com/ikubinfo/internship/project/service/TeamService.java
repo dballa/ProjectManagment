@@ -65,4 +65,8 @@ public class TeamService {
 		
 		return teamDao.accessTeam(idTeam);
 	}
+	public boolean isTeamWithoutProject(Team team) {
+		System.out.println( teamDao.isTeamWithoutProject(team)+"ne service");
+		return teamDao.isTeamWithoutProject(team);
+	}
 }

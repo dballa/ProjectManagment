@@ -29,7 +29,7 @@ public class TeamLeaderFilter implements Filter{
 					&& session.getAttribute("userRole").equals("Team Leader");
 
 			
-			if (isLogined) {
+			if (!isLogined) {
 				
 				res.sendRedirect(contextPath + "/NoPermission.xhtml");
 			} else {

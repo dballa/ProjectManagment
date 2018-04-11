@@ -46,10 +46,7 @@ public class EditTeamBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-	
 
-		
-		
 		
 	}
 	

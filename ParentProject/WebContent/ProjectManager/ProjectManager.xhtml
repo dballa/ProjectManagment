@@ -209,7 +209,7 @@ color: red;
 				<p:commandButton value="Save"
 					action="#{projectManagerBean.addProject}"
 					update="myForm:projectTable panel growl"
-					onsuccess="PF('dlg1').hide();"
+					oncomplete="if (!args.validationFailed){PF('dlg1').hide()}"
 					process="@this projectName projectDesc clienName startDate endDate teamSelect statusSelect "
 					resetValues="true" />
 				<p:commandButton value="Close" ajax="true" update="panel"

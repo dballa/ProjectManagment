@@ -1,55 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
-  <display-name>ProjectManagment</display-name>
-  <servlet>
-    <servlet-name>Faces Servlet</servlet-name>
-    <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Faces Servlet</servlet-name>
-    <url-pattern>*.xhtml</url-pattern>
-  </servlet-mapping>
-  <context-param>
-    <description>State saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2</description>
-    <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
-    <param-value>client</param-value>
-  </context-param>
-  <context-param>
-    <param-name>contextConfigLocation</param-name>
-    <param-value>/WEB-INF/applicationContext.xml</param-value>
-  </context-param>
-  <context-param>
-    <param-name>primefaces.THEME</param-name>
-    <param-value>bootstrap</param-value>
-  </context-param>
-  <welcome-file-list>
-    <welcome-file>Login.xhtml</welcome-file>
-  </welcome-file-list>
-  <error-page>
-    <error-code>404</error-code>
-    <location>/PageNotFound.xhtml</location>
-  </error-page>
-  <error-page>
-    <error-code>500</error-code>
-    <location>/PageNotFound.xhtml</location>
-  </error-page>
-  <listener>
-    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-  </listener>
-  <listener>
-    <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
-  </listener>
-<filter>
-		<filter-name>MyFilter</filter-name>
-		<filter-class>com.ikubinfo.internship.project.utils.MyFilter</filter-class>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+	<display-name>ProjectManagment</display-name>
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.xhtml</url-pattern>
+	</servlet-mapping>
+	<context-param>
+		<description>State saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2</description>
+		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+		<param-value>client</param-value>
+	</context-param>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/applicationContext.xml</param-value>
+	</context-param>
+	<context-param>
+		<param-name>primefaces.THEME</param-name>
+		<param-value>bootstrap</param-value>
+	</context-param>
+	<welcome-file-list>
+		<welcome-file>Login.xhtml</welcome-file>
+	</welcome-file-list>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/PageNotFound.xhtml</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/PageNotFound.xhtml</location>
+	</error-page>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
+
+
+
+	<filter>
+		<filter-name>LoginFilter</filter-name>
+		<filter-class>com.ikubinfo.internship.project.utils.LoginFilter</filter-class>
 	</filter>
 
 	<filter-mapping>
-		<filter-name>MyFilter</filter-name>
-		<url-pattern>/BusinessAnalyst/*</url-pattern>
+		<filter-name>LoginFilter</filter-name>
 		<url-pattern>/Developer/*</url-pattern>
-		<url-pattern>/Teamleader/*</url-pattern>
+		<url-pattern>/TeamLeader/*</url-pattern>
+		<url-pattern>/BusinessAnalyst/*</url-pattern>
+		<url-pattern>/ProjectManager/*</url-pattern>
+
+	</filter-mapping>
+	<filter>
+		<filter-name>ProjectManagerFilter</filter-name>
+		<filter-class>com.ikubinfo.internship.project.utils.ProjectManagerFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>ProjectManagerFilter</filter-name>
+		<url-pattern>/ProjectManager/*</url-pattern>
+
 	</filter-mapping>
 	<filter>
 		<filter-name>BusinessAnalystFilter</filter-name>
@@ -58,9 +76,8 @@
 
 	<filter-mapping>
 		<filter-name>BusinessAnalystFilter</filter-name>
-		<url-pattern>/ProjectManager/*</url-pattern>
-		<url-pattern>/Developer/*</url-pattern>
-		<url-pattern>/Teamleader/*</url-pattern>
+		<url-pattern>/BusinessAnalyst/*</url-pattern>
+
 	</filter-mapping>
 	<filter>
 		<filter-name>TeamLeaderFilter</filter-name>
@@ -69,21 +86,19 @@
 
 	<filter-mapping>
 		<filter-name>TeamLeaderFilter</filter-name>
-		<url-pattern>/ProjectManager/*</url-pattern>
-		<url-pattern>/Developer/*</url-pattern>
-		<url-pattern>/BusinessAnalyst/*</url-pattern>
+		<url-pattern>/TeamLeader/*</url-pattern>
+
 	</filter-mapping>
-	
-		<filter>
+
+	<filter>
 		<filter-name>DeveloperFilter</filter-name>
 		<filter-class>com.ikubinfo.internship.project.utils.DeveloperFilter</filter-class>
 	</filter>
 
 	<filter-mapping>
 		<filter-name>DeveloperFilter</filter-name>
-		<url-pattern>/ProjectManager/*</url-pattern>
-		<url-pattern>/TeamLeader/*</url-pattern>
-		<url-pattern>/BusinessAnalyst/*</url-pattern>
-	</filter-mapping>
-		
+		<url-pattern>/Developer/*</url-pattern>
+
+
+</filter-mapping>
 </web-app>

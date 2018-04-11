@@ -29,7 +29,7 @@ public class BusinessAnalystFilter implements Filter{
 					&& session.getAttribute("userRole").equals("Business Analyst");
 
 			
-			if (isLogined) {
+			if (!isLogined) {
 				
 				res.sendRedirect(contextPath + "/NoPermission.xhtml");
 			} else {

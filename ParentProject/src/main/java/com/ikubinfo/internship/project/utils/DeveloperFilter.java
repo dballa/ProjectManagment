@@ -17,8 +17,8 @@ public class DeveloperFilter implements Filter {
 	private ServletContext context;
 
 	@Override
-		public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-				throws IOException, ServletException {
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
 
 		try {
 			HttpServletRequest req = (HttpServletRequest) request;
@@ -27,10 +27,8 @@ public class DeveloperFilter implements Filter {
 			HttpSession session = req.getSession(false);
 			boolean isLogined = session != null && session.getAttribute("userId") != null
 					&& session.getAttribute("userRole").equals("Developer");
+			if (!isLogined) {
 
-			
-			if (isLogined) {
-				
 				res.sendRedirect(contextPath + "/NoPermission.xhtml");
 			} else {
 				chain.doFilter(request, response);
@@ -39,9 +37,8 @@ public class DeveloperFilter implements Filter {
 		} catch (Throwable t) {
 			System.out.println(t.getMessage());
 		}
-			
-			
-		}
+
+	}
 
 	@Override
 	public void init(FilterConfig fConfig) throws ServletException {

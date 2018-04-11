@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import com.ikubinfo.internship.project.converter.ProjectConverter;
 import com.ikubinfo.internship.project.entity.ProjectEntity;
 import com.ikubinfo.internship.project.pojo.Project;
+import com.ikubinfo.internship.project.utils.StatesEnum;
 
 @Repository
 @Transactional
@@ -78,7 +79,7 @@ public class ProjectDao {
 		("select proj from ProjectEntity  proj  join proj.team.members  mem where mem.user.idUser=?1 and proj.status.nameStatus=?2 and proj.validity=1",
 				ProjectEntity.class);
 		query.setParameter(1, id);
-		query.setParameter(2, "Waiting BA");
+		query.setParameter(2, StatesEnum.BA_STATUS.getStr());
 		List<ProjectEntity> baProjects = query.getResultList();
 		System.out.println(baProjects);
 		List<Project> baProjectsPojo = new ArrayList<Project>();

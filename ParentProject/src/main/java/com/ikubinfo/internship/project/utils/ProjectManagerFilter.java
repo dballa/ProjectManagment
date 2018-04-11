@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
-public class MyFilter implements Filter {
+public class ProjectManagerFilter implements Filter {
 	private ServletContext context;
 
 	@Override
@@ -32,7 +32,7 @@ public class MyFilter implements Filter {
 					&& session.getAttribute("userRole").equals("Project Manager");
 
 			
-			if (isLogined) {
+			if (!isLogined) {
 				
 				res.sendRedirect(contextPath + "/NoPermission.xhtml");
 			} else {

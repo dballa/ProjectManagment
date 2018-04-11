@@ -22,6 +22,7 @@ import com.ikubinfo.internship.project.entity.UserEntity;
 import com.ikubinfo.internship.project.pojo.Member;
 import com.ikubinfo.internship.project.pojo.Team;
 import com.ikubinfo.internship.project.pojo.User;
+import com.ikubinfo.internship.project.utils.StatesEnum;
 
 @Repository
 @Transactional
@@ -55,22 +56,22 @@ public class TeamDao {
 
 	}
 
-	// public boolean tryEx(Team team) throws TeamInProjectException {
-	//
-	// Session session=sessionFactory.getCurrentSession();
-	// Query<ProjectEntity>query=session.createQuery("from ProjectEntity proj where
-	// proj.validity=1 and proj.team.idTeam=?1 ",ProjectEntity.class);
-	// query.setParameter(1, team.getIdTeam());
-	// List<ProjectEntity>project=query.getResultList();
-	//
-	//
-	// if (project !=null) {
-	// throw new TeamInProjectException("This Team has a project");
-	//
-	// }
-	// else return false;
-	//
-	// }
+	 public boolean isTeamWithoutProject(Team team) {
+	
+	 Session session=sessionFactory.getCurrentSession();
+	 Query<ProjectEntity>query=session.createQuery("select proj from ProjectEntity proj where proj.team.idTeam=?1  and proj.validity=1 and proj.status.nameStatus!=?2",ProjectEntity.class);
+	 query.setParameter(1, team.getIdTeam());
+	 query.setParameter(2, StatesEnum.DONE_STATUS.getStr());
+	 List<ProjectEntity>project=query.getResultList();
+	System.out.println(project);
+	
+	 if (project.isEmpty()) {
+	 return true;
+	
+	 }
+	 else return false;
+	
+	 }
 
 	public void removeTeam(Team team) {
 		Session session = sessionFactory.getCurrentSession();

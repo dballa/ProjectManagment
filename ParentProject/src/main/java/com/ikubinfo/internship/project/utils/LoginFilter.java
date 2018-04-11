@@ -28,13 +28,14 @@ public class LoginFilter implements Filter {
 			HttpServletResponse res = (HttpServletResponse) response;
 			String contextPath = req.getContextPath();
 			HttpSession session = req.getSession(false);
-			boolean isLogined = session != null && session.getAttribute("userId") != null;
+
 					
 
 			
-			if (isLogined) {
+			if (session == null) {
 				
 				res.sendRedirect(contextPath + "/Login.xhtml");
+				
 			} else {
 				chain.doFilter(request, response);
 			}
